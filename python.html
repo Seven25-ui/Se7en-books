@@ -3,537 +3,587 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seven — Books & Ebooks</title>
-
-<meta name="description" content="Seven — a curated ebook store. Read The Seven Python Book free, plus hundreds of curated titles.">
-<meta property="og:title" content="Seven — Books & Ebooks">
-<meta property="og:description" content="Curated ebooks for curious minds. Read The Seven Python Book for free.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://seven25-ui.github.io/Se7en-books/">
+<title>The Seven Python Book — Seven</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>7</text></svg>">
-
 <style>
   :root {
-    --bg: #f7f5f0; --ink: #1a1a1a; --muted: #6b6b6b;
-    --accent: #c4552a; --accent-dark: #a34421;
-    --card: #ffffff; --rule: #e3ddd3; --gold: #d4a24a;
+    --bg: #fdfcf9; --ink: #1a1a1a; --muted: #6b6b6b;
+    --accent: #c4552a; --gold: #d4a24a; --rule: #e3ddd3;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.5; }
-  a { color: inherit; text-decoration: none; }
-
-  header { background: #23201c; color: #f5f1ea; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,.2); }
-  .header-inner { max-width: 1200px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-  .logo { font-family: Georgia, serif; font-size: 1.9rem; font-weight: 700; letter-spacing: -1px; color: var(--gold); cursor: pointer; white-space: nowrap; }
-  .logo span { color: #fff; font-size: .8em; letter-spacing: 0; font-weight: 400; }
-  .search-wrap { flex: 1; min-width: 220px; display: flex; background: #fff; border-radius: 6px; overflow: hidden; }
-  .search-wrap input { flex: 1; border: none; padding: 11px 14px; font-size: .95rem; outline: none; color: #1a1a1a; }
-  .search-wrap button { background: var(--accent); border: none; color: #fff; padding: 0 20px; cursor: pointer; font-size: .95rem; font-weight: 600; }
-  .search-wrap button:hover { background: var(--accent-dark); }
-  .nav-icons { display: flex; gap: 18px; font-size: .9rem; align-items: center; }
-  .nav-icons div { cursor: pointer; opacity: .85; transition: opacity 0.15s; }
-  .nav-icons div:hover { opacity: 1; }
-
-  .hero { background: linear-gradient(135deg, #23201c 0%, #3a332b 100%); color: #f5f1ea; text-align: center; padding: 70px 20px 80px; }
-  .hero h1 { font-family: Georgia, serif; font-size: clamp(2rem, 5vw, 3.4rem); margin-bottom: 14px; letter-spacing: -1px; }
-  .hero h1 em { color: var(--gold); font-style: italic; }
-  .hero p { color: #c9c1b4; font-size: 1.1rem; max-width: 560px; margin: 0 auto 28px; }
-  .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-  .btn { padding: 12px 26px; border-radius: 6px; font-weight: 600; font-size: .95rem; cursor: pointer; border: none; transition: transform .15s, background .15s; }
-  .btn:hover { transform: translateY(-2px); }
-  .btn-primary { background: var(--accent); color: #fff; display: inline-block; text-align: center; }
-  .btn-primary:hover { background: var(--accent-dark); }
-  .btn-ghost { background: transparent; color: #f5f1ea; border: 1.5px solid #6b6459; display: inline-block; text-align: center; }
-  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
-
-  .categories { background: #fff; border-bottom: 1px solid var(--rule); position: sticky; top: 66px; z-index: 90; overflow-x: auto; white-space: nowrap; }
-  .categories-inner { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; gap: 4px; }
-  .cat { padding: 14px 18px; font-size: .9rem; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; transition: color .15s, border-color .15s; }
-  .cat:hover { color: var(--ink); }
-  .cat.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-  main { max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px; }
-  .section-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 22px; flex-wrap: wrap; gap: 10px; }
-  .section-head h2 { font-family: Georgia, serif; font-size: 1.7rem; letter-spacing: -.5px; }
-  .section-head .count { color: var(--muted); font-size: .9rem; }
-
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 26px; }
-
-  .book { background: var(--card); border-radius: 8px; overflow: hidden; border: 1px solid var(--rule); transition: transform .2s, box-shadow .2s; cursor: pointer; display: flex; flex-direction: column; text-decoration: none; color: inherit; }
-  .book:hover { transform: translateY(-6px); box-shadow: 0 12px 28px rgba(0,0,0,.12); }
-  .cover { aspect-ratio: 2 / 3; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; color: #fff; position: relative; }
-  .cover .title { font-family: Georgia, serif; font-size: 1.25rem; font-weight: 700; line-height: 1.25; text-shadow: 0 1px 4px rgba(0,0,0,.3); }
-  .cover .author { margin-top: 8px; font-size: .8rem; opacity: .85; text-transform: uppercase; letter-spacing: 1px; }
-  .cover .spine { position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: rgba(0,0,0,.25); }
-  .cover .badge { position: absolute; top: 10px; right: 10px; background: var(--gold); color: #23201c; font-size: .7rem; font-weight: 700; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: .5px; }
-  .book-info { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; }
-  .book-title { font-weight: 600; font-size: .95rem; line-height: 1.3; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .book-author { font-size: .82rem; color: var(--muted); margin-bottom: 8px; }
-  .rating { color: var(--gold); font-size: .82rem; margin-bottom: 8px; }
-  .rating span { color: var(--muted); }
-  .price-row { margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
-  .price { font-weight: 700; font-size: 1.05rem; color: var(--accent); }
-  .price .old { text-decoration: line-through; color: var(--muted); font-weight: 400; font-size: .85rem; margin-right: 4px; }
-  .add-btn { background: var(--ink); color: #fff; border: none; border-radius: 5px; padding: 6px 12px; font-size: .78rem; font-weight: 600; cursor: pointer; transition: background 0.15s; text-decoration: none; display: inline-block; }
-  .add-btn:hover { background: var(--accent); }
-
-  .newsletter { background: #23201c; color: #f5f1ea; text-align: center; padding: 50px 20px; margin-top: 60px; border-radius: 10px; }
-  .newsletter h2 { font-family: Georgia, serif; font-size: 1.7rem; margin-bottom: 10px; }
-  .newsletter p { color: #b8b0a3; margin-bottom: 22px; }
-  .newsletter form { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-  .newsletter input { padding: 12px 16px; border-radius: 6px; border: 1px solid #4a443b; background: #2e2a24; color: #fff; font-size: .95rem; min-width: 260px; outline: none; }
-  .newsletter input:focus { border-color: var(--gold); }
-
-  footer { background: #1a1713; color: #9a9285; padding: 50px 20px 30px; margin-top: 60px; font-size: .88rem; }
-  .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 30px; }
-  .footer-col h4 { color: #f5f1ea; margin-bottom: 12px; font-size: .95rem; }
-  .footer-col a { display: block; margin-bottom: 8px; }
-  .footer-col a:hover { color: var(--gold); }
-  .footer-bottom { max-width: 1200px; margin: 36px auto 0; padding-top: 24px; border-top: 1px solid #332e28; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; color: #6b645a; }
-
-  .empty { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--muted); }
-  .empty h3 { font-family: Georgia, serif; color: var(--ink); margin-bottom: 8px; }
-
-  /* ---------- CART DRAWER ---------- */
-  .cart-overlay { position: fixed; inset: 0; background: rgba(20,18,15,.6); z-index: 1001; display: none; opacity: 0; transition: opacity 0.3s; }
-  .cart-overlay.open { display: block; opacity: 1; }
-  .cart-drawer { position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100vh; background: #fff; z-index: 1002; box-shadow: -5px 0 15px rgba(0,0,0,.1); transition: right 0.3s ease; display: flex; flex-direction: column; }
-  .cart-drawer.open { right: 0; }
-  .cart-header { padding: 20px; background: #23201c; color: #fff; display: flex; justify-content: space-between; align-items: center; }
-  .cart-header h3 { font-family: Georgia, serif; font-size: 1.2rem; margin: 0; }
-  .cart-close { cursor: pointer; font-size: 1.5rem; background: none; border: none; color: #fff; }
-  .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
-  .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); padding: 15px 0; }
-  .cart-item-info h4 { font-size: 0.95rem; margin-bottom: 5px; color: var(--ink); }
-  .cart-item-info p { font-size: 0.85rem; color: var(--muted); }
-  .cart-item-price { font-weight: bold; color: var(--accent); }
-  .remove-btn { background: none; border: none; color: #d9534f; cursor: pointer; font-size: 0.85rem; margin-top: 5px; padding: 0; }
-  .remove-btn:hover { text-decoration: underline; }
-  .cart-footer { padding: 20px; border-top: 1px solid var(--rule); background: #f9f9f9; }
-  .cart-total { display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; color: var(--ink); }
-  .checkout-btn { width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; font-weight: bold; }
-  .checkout-btn:hover { background: var(--accent-dark); }
-
-  /* ---------- DETAILS MODAL ---------- */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(20,18,15,.75); backdrop-filter: blur(4px); z-index: 1005; display: none; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 30px 16px; }
-  .modal-overlay.open { display: flex; }
-  .modal-box { background: #fdfcf9; color: #1a1a1a; max-width: 760px; width: 100%; border-radius: 10px; box-shadow: 0 30px 80px rgba(0,0,0,.4); overflow: hidden; position: relative; }
-  .modal-bar { background: #23201c; color: #f5f1ea; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 5; }
-  .modal-bar .rtitle { font-family: Georgia, serif; font-size: 1.05rem; color: var(--gold); font-weight: 700; }
-  .modal-bar button { background: transparent; border: 1px solid #6b6459; color: #f5f1ea; padding: 6px 14px; border-radius: 5px; cursor: pointer; font-size: .85rem; }
-  .modal-bar button:hover { border-color: var(--gold); color: var(--gold); }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: var(--bg); color: var(--ink);
+    line-height: 1.75; font-size: 18px;
+    padding-bottom: 80px;
+  }
   
-  .details-content { padding: 40px 46px 50px; }
-  .details-header { display: flex; gap: 24px; margin-bottom: 30px; align-items: flex-start; }
-  .details-cover { width: 120px; height: 180px; border-radius: 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; text-align: center; padding: 10px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,.15); }
-  .details-cover .title { font-family: Georgia, serif; font-size: .9rem; font-weight: bold; line-height: 1.2; }
-  .details-meta h2 { font-family: Georgia, serif; font-size: 1.8rem; margin-bottom: 6px; line-height: 1.2; }
-  .details-meta .author { font-size: 1rem; color: var(--muted); margin-bottom: 10px; }
-  .details-meta .rating { font-size: 1rem; }
+  /* Sticky Header */
+  .top-bar {
+    background: #23201c; color: #f5f1ea;
+    padding: 14px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,.2);
+  }
+  .back-btn {
+    color: #f5f1ea; text-decoration: none; font-family: sans-serif;
+    font-size: .9rem; display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px; border: 1px solid #6b6459; border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .top-title { font-family: Georgia, serif; color: var(--gold); font-weight: bold; font-size: 1.1rem; }
+
+  /* Book Content */
+  .book-container {
+    max-width: 760px; margin: 40px auto; padding: 0 24px;
+  }
+  h1 { font-family: Georgia, serif; font-size: 2.6rem; text-align: center; margin: 0 0 6px; letter-spacing: -1px; }
+  .subtitle { text-align: center; color: #6b6b6b; font-style: italic; margin-bottom: 44px; font-size: 1.1rem; }
+  h2 { font-family: Georgia, serif; font-size: 1.6rem; margin: 3rem 0 1rem; padding-top: 1.5rem; border-top: 2px solid var(--rule); }
+  h3 { font-family: -apple-system, sans-serif; font-size: 1.3rem; margin: 2.5rem 0 1rem; color: #2b5d8a; }
+  h4 { font-family: -apple-system, sans-serif; font-size: 1.05rem; margin: 1.5rem 0 .6rem; }
+  p { margin: 1.1rem 0; }
+  ul, ol { margin: 1rem 0; padding-left: 1.8rem; }
+  li { margin: .5rem 0; }
+  code { font-family: Consolas, "Courier New", monospace; background: #f0ede6; padding: .15em .4em; border-radius: 4px; font-size: .88em; }
+  pre { background: #f0ede6; border-left: 4px solid #2b5d8a; padding: 1.2rem; overflow-x: auto; border-radius: 6px; font-size: .85rem; line-height: 1.6; margin: 1.5rem 0; }
+  pre code { background: none; padding: 0; font-size: 1em; }
+  blockquote { border-left: 4px solid var(--accent); margin: 1.5rem 0; padding: .5rem 1.2rem; color: #555; font-style: italic; font-size: 1.1rem; }
   
-  .hook-box { background: #f0f3f6; border-left: 4px solid var(--accent); padding: 16px 20px; border-radius: 0 6px 6px 0; margin-bottom: 24px; font-style: italic; font-size: 1.05rem; color: #333; }
-  .sample-text { font-family: Georgia, serif; font-size: 16px; line-height: 1.8; color: #333; margin-bottom: 30px; }
-  .sample-text p { margin-bottom: 1rem; }
-  
-  .buy-action { text-align: center; border-top: 1px solid var(--rule); padding-top: 24px; }
-  .buy-btn-amazon { display: inline-block; background: #ff9900; color: #111; padding: 14px 32px; border-radius: 8px; font-size: 1.1rem; font-weight: bold; text-decoration: none; transition: background 0.2s; }
-  .buy-btn-amazon:hover { background: #e68a00; }
-  .buy-note { font-size: .8rem; color: var(--muted); margin-top: 10px; }
+  /* Special Elements */
+  .toc { background: #f0f3f6; padding: 1.5rem 2rem; border-radius: 8px; margin: 2rem 0 3rem; font-size: .95rem; }
+  .toc h2 { border: none; margin: 0 0 .8rem; padding: 0; font-size: 1.2rem; }
+  .toc ol { margin: 0; padding-left: 1.5rem; }
+  .part-title { text-align: center; margin: 4rem 0 2rem; padding: 1.5rem 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .part-title h2 { border: none; padding: 0; margin: 0; font-size: 1.8rem; color: #2b5d8a; }
+  .part-title .epigraph { color: #6b6b6b; font-style: italic; margin-top: .5rem; font-family: sans-serif; font-size: .95rem; }
+  .exercise { background: #fbf6ea; border-left: 4px solid var(--gold); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; font-size: .95rem; }
+  .note { background: #eef5f2; border-left: 4px solid #4a9b74; padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; font-size: .95rem; }
+  .end-mark { text-align: center; color: #6b6b6b; font-style: italic; margin-top: 4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; margin: 1.5rem 0; font-size: .95rem; font-family: sans-serif; }
+  th, td { border: 1px solid var(--rule); padding: .6rem .8rem; text-align: left; }
+  th { background: #eef2f6; }
 
   @media (max-width: 600px) {
-    .nav-icons { display: flex; gap: 10px; font-size: 0.8rem; }
-    .grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-    .cover .title { font-size: 1rem; }
-    .cart-drawer { width: 90%; }
-    .details-content { padding: 24px 20px 40px; }
-    .details-header { flex-direction: column; align-items: center; text-align: center; gap: 16px; }
-    .details-cover { width: 100px; height: 150px; }
-    .details-meta h2 { font-size: 1.4rem; }
+    .book-container { padding: 0 20px; margin: 20px auto; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.4rem; }
+    h3 { font-size: 1.15rem; }
+    body { font-size: 16px; }
+    .top-title { display: none; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div class="logo" onclick="resetFilter()">seven<span>.</span></div>
-    <div class="search-wrap">
-      <input id="searchInput" type="text" placeholder="Search books, authors, genres..." oninput="renderBooks()">
-      <button onclick="renderBooks()">Search</button>
-    </div>
-    <div class="nav-icons">
-      <div>👤 Account</div>
-      <div onclick="toggleCart()">🛒 Cart <span id="cartCount">(0)</span></div>
-    </div>
-  </div>
-</header>
-
-<section class="hero">
-  <h1>Seven books to change<br>how you <em>think</em>.</h1>
-  <p>A curated ebook store. Seven curated shelves, thousands of titles, one clean reading experience.</p>
-  <div class="hero-btns">
-    <button class="btn btn-primary" onclick="scrollToBooks()">Browse Books</button>
-    <!-- Giusab ngadto sa <a> tag para direct link sa python.html -->
-    <a href="python.html" class="btn btn-ghost">Read The Seven Python Book →</a>
-  </div>
-</section>
-
-<div class="categories">
-  <div class="categories-inner" id="categoryBar"></div>
+<div class="top-bar">
+  <a href="index.html" class="back-btn">← Back to Store</a>
+  <span class="top-title">The Seven Python Book</span>
 </div>
 
-<main>
-  <div class="section-head">
-    <h2 id="sectionTitle">All Books</h2>
-    <div class="count" id="bookCount"></div>
-  </div>
-  <div class="grid" id="bookGrid"></div>
+<div class="book-container">
+  <h1>The Seven Python Book</h1>
+  <p class="subtitle">A Complete Tutorial in Seven Parts</p>
 
-  <div class="newsletter">
-    <h2>Get one free ebook a month</h2>
-    <p>Join the Seven readers' list. No spam, just good books.</p>
-    <form onsubmit="event.preventDefault(); this.querySelector('input').value=''; alert('Thanks for subscribing!')">
-      <input type="email" placeholder="your@email.com" required>
-      <button class="btn btn-primary" type="submit">Subscribe</button>
-    </form>
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li>Preface</li>
+      <li>Part One — First Steps</li>
+      <li>Part Two — The Tools of Expression</li>
+      <li>Part Three — Structuring Data</li>
+      <li>Part Four — Objects and Errors</li>
+      <li>Part Five — Files and Modules</li>
+      <li>Part Six — Practical Python</li>
+      <li>Part Seven — Going Further</li>
+      <li>Appendix — Cheat Sheet</li>
+    </ol>
   </div>
-</main>
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-col">
-      <h4>seven.</h4>
-      <p style="color:#6b645a;">Curated ebooks for curious minds.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Shop</h4>
-      <a href="#">New Releases</a>
-      <a href="#">Best Sellers</a>
-      <a href="#">Free Ebooks</a>
-      <a href="#">Gift Cards</a>
-    </div>
-    <div class="footer-col">
-      <h4>Support</h4>
-      <a href="#">Help Center</a>
-      <a href="#">Returns</a>
-      <a href="#">Contact Us</a>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <a href="#">About</a>
-      <a href="#">Careers</a>
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 Seven Books. All rights reserved.</span>
-    <span>Made with ☕ and code.</span>
-  </div>
-</footer>
+  <h2>Preface</h2>
+  <p>This book teaches Python through seven progressive parts, each building on the last. It assumes no prior programming experience but rewards patience. By the end, you will be able to write real programs, understand the language deeply, and know where to go next.</p>
+  <p>Work through the parts in order. Type the code yourself — do not copy-paste. Muscle memory matters. When something confuses you, do not skip it; confusion is the feeling of learning.</p>
+  <blockquote>The only way to learn a language is to speak it badly until you speak it well.</blockquote>
 
-<!-- ============ CART DRAWER ============ -->
-<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
-<div class="cart-drawer" id="cartDrawer">
-  <div class="cart-header">
-    <h3>Your Cart</h3>
-    <button class="cart-close" onclick="toggleCart()">✕</button>
+  <div class="part-title">
+    <h2>Part One — First Steps</h2>
+    <div class="epigraph">The ground beneath your feet</div>
   </div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-footer">
-    <div class="cart-total"><span>Total:</span> <span id="cartTotal">$0.00</span></div>
-    <button class="checkout-btn" onclick="alert('Checkout functionality coming soon!')">Checkout</button>
+
+  <h3>1. What Python Is</h3>
+  <p>Python is a programming language created by Guido van Rossum in 1991. It is named after <em>Monty Python</em>, not the snake. It emphasizes readability: code should look like pseudocode that happens to run.</p>
+  <p>Python is <strong>interpreted</strong> — a program reads and executes it line by line. It is <strong>dynamically typed</strong> — you do not declare variable types. It is <strong>high-level</strong> — you do not manage memory manually.</p>
+  <p>You will find Python in web servers, data science, automation, games, machine learning, and education.</p>
+
+  <h3>2. Installing Python</h3>
+  <p>Go to python.org and download the latest stable version (3.12 or newer). On Windows, check “Add Python to PATH.” Verify:</p>
+  <pre><code>python --version
+# Python 3.12.3</code></pre>
+  <p>You also get <strong>pip</strong>, the package installer. For serious work, install <strong>VS Code</strong> with the Python extension.</p>
+
+  <h3>3. Your First Program</h3>
+  <p>Create <code>hello.py</code>:</p>
+  <pre><code>print("Hello, world!")</code></pre>
+  <p>Run with <code>python hello.py</code>. <code>print()</code> is a function; the text is an argument; the quotes mark a string.</p>
+  <pre><code>print("Python is fun.")
+print(2 + 2)
+print("2 + 2 =", 2 + 2)</code></pre>
+
+  <h3>4. Comments and Style</h3>
+  <pre><code># This is a comment. Python ignores it.
+
+"""
+Multi-line string, often used as a docstring.
+"""
+
+def area(width, height):
+    """Return the area of a rectangle."""
+    return width * height</code></pre>
+  <p>Style rules from PEP 8: four spaces per indent; <code>snake_case</code> for variables and functions; <code>PascalCase</code> for classes; lines under 79 characters.</p>
+
+  <h3>5. Variables and Types</h3>
+  <pre><code>name = "Ada"
+age = 36
+height = 1.68
+is_programmer = True</code></pre>
+  <table>
+    <tr><th>Type</th><th>Example</th><th>Meaning</th></tr>
+    <tr><td><code>int</code></td><td><code>42</code></td><td>whole number</td></tr>
+    <tr><td><code>float</code></td><td><code>3.14</code></td><td>decimal number</td></tr>
+    <tr><td><code>str</code></td><td><code>"hello"</code></td><td>text</td></tr>
+    <tr><td><code>bool</code></td><td><code>True</code>/<code>False</code></td><td>truth value</td></tr>
+    <tr><td><code>NoneType</code></td><td><code>None</code></td><td>absence of value</td></tr>
+  </table>
+  <pre><code>print(type(42))       # &lt;class 'int'&gt;
+print(int("42"))      # 42
+print(str(42))        # "42"
+print(float("3.5"))   # 3.5</code></pre>
+  <div class="exercise"><strong>Exercises.</strong> Create variables for your name, age, and favorite language, then print a sentence. Convert <code>"100"</code> to an integer and add 50.</div>
+
+  <div class="part-title">
+    <h2>Part Two — The Tools of Expression</h2>
+    <div class="epigraph">Operators, strings, and control flow</div>
   </div>
+
+  <h3>6. Operators</h3>
+  <pre><code>print(7 + 3)    # 10
+print(7 - 3)    # 4
+print(7 * 3)    # 21
+print(7 / 3)    # 2.333...  (true division)
+print(7 // 3)   # 2         (floor division)
+print(7 % 3)    # 1         (remainder)
+print(7 ** 3)   # 343       (exponent)</code></pre>
+  <p>Comparison: <code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>. Logical: <code>and</code>, <code>or</code>, <code>not</code>. Assignment shortcuts: <code>x += 5</code>, <code>x -= 3</code>, <code>x *= 2</code>.</p>
+
+  <h3>7. Strings in Depth</h3>
+  <pre><code>s = "Python"
+print(s[0])      # P
+print(s[-1])     # n
+print(s[0:3])    # Pyt
+print(s[::-1])   # nohtyP
+
+text = "  Hello, World!  "
+print(text.strip())                    # "Hello, World!"
+print(text.lower())                    # "  hello, world!  "
+print("apple,banana".split(","))       # ['apple', 'banana']
+print("-".join(["a", "b", "c"]))       # a-b-c
+
+name = "Ada"
+age = 36
+print(f"{name} is {age} years old.")
+print(f"Pi to 2 decimals: {3.14159:.2f}")</code></pre>
+  <div class="exercise"><strong>Exercises.</strong> Take <code>"  Data Science  "</code> and print it stripped, lowercased, and reversed. Ask for a name with <code>input()</code> and print <code>"Hello, NAME!"</code>.</div>
+
+  <h3>8. Conditionals</h3>
+  <pre><code>age = int(input("How old are you? "))
+
+if age &lt; 13:
+    print("Child")
+elif age &lt; 20:
+    print("Teenager")
+elif age &lt; 65:
+    print("Adult")
+else:
+    print("Senior")</code></pre>
+  <p>Ternary: <code>status = "adult" if age &gt;= 18 else "minor"</code>. Empty values (<code>""</code>, <code>[]</code>, <code>0</code>, <code>None</code>) are falsy.</p>
+
+  <h3>9. Loops</h3>
+  <pre><code>for i in range(5):
+    print(i)   # 0 1 2 3 4
+
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(fruit)
+
+count = 0
+while count &lt; 3:
+    print("count is", count)
+    count += 1
+
+for n in range(10):
+    if n == 5:
+        break
+    if n % 2 == 0:
+        continue
+    print(n)   # 1 3</code></pre>
+  <div class="exercise"><strong>Exercises.</strong> Print all even numbers from 1 to 20. Use <code>while</code> to sum the numbers from 1 to 100.</div>
+
+  <div class="part-title">
+    <h2>Part Three — Structuring Data</h2>
+    <div class="epigraph">Collections and functions</div>
+  </div>
+
+  <h3>10. Lists</h3>
+  <pre><code>fruits = ["apple", "banana", "cherry"]
+fruits.append("date")
+fruits[0] = "apricot"
+
+nums = [3, 1, 4, 1, 5]
+nums.sort()
+nums.reverse()
+nums.remove(4)
+nums.pop()
+nums.insert(0, 99)
+
+letters = ["a", "b", "c", "d", "e"]
+print(letters[1:4])    # ['b', 'c', 'd']
+print(letters[::2])    # ['a', 'c', 'e']
+
+squares = [x * x for x in range(5)]
+evens = [x for x in range(10) if x % 2 == 0]</code></pre>
+
+  <h3>11. Tuples and Sets</h3>
+  <pre><code>point = (3, 4)
+x, y = point     # unpacking
+
+a = {1, 2, 3}
+b = {3, 4, 5}
+print(a &amp; b)    # {3}       intersection
+print(a | b)    # {1,2,3,4,5} union
+print(a - b)    # {1, 2}    difference</code></pre>
+
+  <h3>12. Dictionaries</h3>
+  <pre><code>person = {
+    "name": "Ada",
+    "age": 36,
+    "languages": ["Python", "C"]
+}
+print(person["name"])                # Ada
+person["age"] = 37
+print(person.get("job", "unknown"))  # unknown
+
+for key, value in person.items():
+    print(f"{key}: {value}")
+
+squares = {x: x * x for x in range(5)}</code></pre>
+  <div class="exercise"><strong>Exercises.</strong> Build a dict of three countries and their capitals. Given a list of words, count each word's frequency.</div>
+
+  <h3>13. Functions</h3>
+  <pre><code>def greet(name):
+    """Return a greeting for name."""
+    return f"Hello, {name}!"
+
+def power(base, exponent=2):
+    return base ** exponent
+
+print(power(3))       # 9
+print(power(3, 3))    # 27
+
+def total(*args):
+    return sum(args)
+
+def describe(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}={value}")</code></pre>
+  <div class="exercise"><strong>Exercises.</strong> Write <code>is_even(n)</code>. Write <code>average(numbers)</code>.</div>
+
+  <div class="part-title">
+    <h2>Part Four — Objects and Errors</h2>
+    <div class="epigraph">Thinking in classes</div>
+  </div>
+
+  <h3>14. Classes and Objects</h3>
+  <pre><code>class Dog:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def bark(self):
+        return f"{self.name} says woof!"
+
+    def __str__(self):
+        return f"Dog({self.name}, {self.age})"
+
+rex = Dog("Rex", 3)
+print(rex.bark())   # Rex says woof!
+print(rex)          # Dog(Rex, 3)
+
+class Puppy(Dog):
+    def bark(self):
+        return f"{self.name} says yip!"</code></pre>
+
+  <h3>15. Errors and Exceptions</h3>
+  <pre><code>try:
+    n = int(input("Number: "))
+    print(10 / n)
+except ValueError:
+    print("Not a number.")
+except ZeroDivisionError:
+    print("Cannot divide by zero.")
+else:
+    print("No errors.")
+finally:
+    print("Always runs.")
+
+def withdraw(amount):
+    if amount &lt; 0:
+        raise ValueError("Amount must be positive")
+    return amount</code></pre>
+  <p>Common exceptions: <code>ValueError</code>, <code>TypeError</code>, <code>KeyError</code>, <code>IndexError</code>, <code>FileNotFoundError</code>.</p>
+  <div class="exercise"><strong>Exercises.</strong> Write a function that safely converts a string to int, returning None on failure.</div>
+
+  <div class="part-title">
+    <h2>Part Five — Files and Modules</h2>
+    <div class="epigraph">Talking to the outside world</div>
+  </div>
+
+  <h3>16. File I/O</h3>
+  <pre><code>with open("notes.txt", "w", encoding="utf-8") as f:
+    f.write("First line\\n")
+    f.write("Second line\\n")
+
+with open("notes.txt", "r", encoding="utf-8") as f:
+    for line in f:
+        print(line.rstrip())
+
+with open("notes.txt", "a", encoding="utf-8") as f:
+    f.write("Appended line\\n")</code></pre>
+
+  <h3>17. Modules and Packages</h3>
+  <pre><code># math_utils.py
+def add(a, b):
+    return a + b
+
+# main.py
+import math_utils
+print(math_utils.add(2, 3))
+
+from math_utils import add
+print(add(2, 3))
+
+import math
+print(math.sqrt(16))       # 4.0
+
+import random
+print(random.randint(1, 10))
+
+import datetime
+print(datetime.date.today())</code></pre>
+  <p>Install third-party packages with <code>pip install requests</code>.</p>
+
+  <h3>18. JSON and CSV</h3>
+  <pre><code>import json
+
+data = {"name": "Ada", "age": 36}
+with open("data.json", "w") as f:
+    json.dump(data, f, indent=2)
+
+with open("data.json", "r") as f:
+    loaded = json.load(f)
+    print(loaded["name"])
+
+import csv
+
+with open("data.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow(["name", "age"])
+    writer.writerow(["Ada", 36])</code></pre>
+  <div class="exercise"><strong>Exercises.</strong> Save a list of dicts to JSON, reload, print it. Read a CSV and compute an average.</div>
+
+  <div class="part-title">
+    <h2>Part Six — Practical Python</h2>
+    <div class="epigraph">Building real things</div>
+  </div>
+
+  <h3>19. Virtual Environments</h3>
+  <pre><code>python -m venv venv
+# Windows:
+venv\\Scripts\\activate
+# macOS/Linux:
+source venv/bin/activate
+
+pip install requests
+pip freeze &gt; requirements.txt
+pip install -r requirements.txt</code></pre>
+
+  <h3>20. Regex</h3>
+  <pre><code>import re
+
+text = "Call 555-1234 or 555-5678"
+matches = re.findall(r"\\d{3}-\\d{4}", text)
+print(matches)   # ['555-1234', '555-5678']
+
+replaced = re.sub(r"\\d", "*", "abc123")
+print(replaced)   # abc***
+
+if re.match(r"^\\w+@\\w+\\.\\w+$", "a@b.com"):
+    print("valid email")</code></pre>
+  <p>Pattern cheat: <code>.</code> any char, <code>\\d</code> digit, <code>\\w</code> word char, <code>\\s</code> space; <code>+</code> one+, <code>*</code> zero+, <code>?</code> optional; <code>^</code> start, <code>$</code> end.</p>
+
+  <h3>21. A Command-Line Tool</h3>
+  <pre><code># wordcount.py
+import sys
+
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: python wordcount.py FILE")
+        return
+    with open(sys.argv[1], encoding="utf-8") as f:
+        text = f.read()
+    words = text.split()
+    print(f"Words: {len(words)}")
+
+if __name__ == "__main__":
+    main()</code></pre>
+
+  <h3>22. Project — Todo List</h3>
+  <pre><code>import json
+import os
+
+FILE = "todo.json"
+
+def load():
+    if not os.path.exists(FILE):
+        return []
+    with open(FILE) as f:
+        return json.load(f)
+
+def save(items):
+    with open(FILE, "w") as f:
+        json.dump(items, f, indent=2)
+
+def show(items):
+    for i, item in enumerate(items, 1):
+        status = "✓" if item["done"] else " "
+        print(f"[{status}] {i}. {item['text']}")
+
+def main():
+    items = load()
+    while True:
+        print()
+        show(items)
+        cmd = input("add/show/done/quit &gt; ").strip()
+        if cmd == "add":
+            items.append({"text": input("Text: "), "done": False})
+        elif cmd == "done":
+            n = int(input("Number: ")) - 1
+            if 0 &lt;= n &lt; len(items):
+                items[n]["done"] = True
+        elif cmd == "quit":
+            break
+        save(items)
+
+if __name__ == "__main__":
+    main()</code></pre>
+  <div class="exercise"><strong>Exercises.</strong> Extend the todo app with delete, edit, and due dates.</div>
+
+  <div class="part-title">
+    <h2>Part Seven — Going Further</h2>
+    <div class="epigraph">Where to go from here</div>
+  </div>
+
+  <h3>23. Testing</h3>
+  <pre><code># test_math.py
+import unittest
+from math_utils import add
+
+class TestAdd(unittest.TestCase):
+    def test_positive(self):
+        self.assertEqual(add(2, 3), 5)
+
+    def test_negative(self):
+        self.assertEqual(add(-1, 1), 0)
+
+if __name__ == "__main__":
+    unittest.main()</code></pre>
+  <p>For bigger projects, use <strong>pytest</strong>: <code>pip install pytest</code>, then run <code>pytest</code>.</p>
+
+  <h3>24. OOP Patterns</h3>
+  <pre><code>from dataclasses import dataclass
+
+@dataclass
+class Point:
+    x: float
+    y: float
+
+class Temperature:
+    def __init__(self, celsius):
+        self._c = celsius
+
+    @property
+    def celsius(self):
+        return self._c
+
+    @celsius.setter
+    def celsius(self, value):
+        if value &lt; -273.15:
+            raise ValueError("Below absolute zero")
+        self._c = value</code></pre>
+
+  <h3>25. The Wider Python World</h3>
+  <p><strong>Web:</strong> Flask, FastAPI, Django. <strong>Data:</strong> pandas, numpy, polars. <strong>Visualization:</strong> matplotlib, seaborn, plotly. <strong>ML:</strong> scikit-learn, PyTorch, TensorFlow. <strong>Automation:</strong> Playwright, Selenium, schedule. <strong>CLI:</strong> click, typer, rich. <strong>Async:</strong> asyncio, httpx.</p>
+  <p>Pick a domain and go deep. Breadth without depth is a hobby; depth without breadth is a trap.</p>
+
+  <h3>26. Practice Plan</h3>
+  <p>Weeks 1–2: Parts 1–3, small scripts daily. Weeks 3–4: Parts 4–5, build the todo project. Weeks 5–6: Part 6, write a CLI tool for a real problem. Ongoing: Exercism, LeetCode, Advent of Code. Build one medium project and put it on GitHub.</p>
+
+  <h2>Appendix — Cheat Sheet</h2>
+  <pre><code># Variables and types
+x = 10
+s = "hello"
+b = True
+
+# Strings
+s.upper(), s.lower(), s.strip(), s.split(",")
+f"{x} and {s}"
+
+# Lists
+lst = [1, 2, 3]
+lst.append(4), lst.pop(), lst[0], lst[-1], lst[1:3]
+
+# Dicts
+d = {"k": "v"}
+d["k"], d.get("missing", default), d.items()
+
+# Loops
+for i in range(5): ...
+while cond: ...
+[x for x in lst if x &gt; 2]
+
+# Files
+with open("f.txt") as fh: data = fh.read()
+
+# JSON
+import json
+json.load(fh), json.dump(obj, fh)
+
+# Classes
+class C:
+    def __init__(self): ...
+    def method(self): ...</code></pre>
+
+  <h4>Recommended Reading</h4>
+  <p><em>Automate the Boring Stuff with Python</em> — Al Sweigart. <em>Python Crash Course</em> — Eric Matthes. <em>Fluent Python</em> — Luciano Ramalho. <em>Effective Python</em> — Brett Slatkin. Official docs: docs.python.org.</p>
+
+  <h4>Afterword</h4>
+  <p>You have held in your hands the map of a language. But maps are not travel. The only way to know Python is to write it — badly at first, then less badly, then well. Every expert you admire wrote broken code and ran it and fixed it and wrote more.</p>
+  <p>Seven parts. Countless programs. Begin.</p>
+
+  <p class="end-mark">— End of <em>The Seven Python Book</em> —</p>
+
 </div>
-
-<!-- ============ BOOK DETAILS MODAL ============ -->
-<div class="modal-overlay" id="detailsOverlay" onclick="if(event.target===this)closeDetails()">
-  <div class="modal-box">
-    <div class="modal-bar">
-      <span class="rtitle">Book Details</span>
-      <button onclick="closeDetails()">✕ Close</button>
-    </div>
-    <div class="details-content" id="detailsContent"></div>
-  </div>
-</div>
-
-<script>
-  /* ---------- BOOK DATA ---------- */
-  const books = [
-    { 
-      id: "python", title: "The Seven Python Book", author: "Seven Press", cat: "Programming", price: 0, old: 19.99, rating: 4.8, reviews: 214, color: "#2b5d8a", badge: "FREE",
-      hook: "Master Python in 7 progressive parts. From absolute beginner to confident developer.",
-      sample: "<p>This book teaches Python through seven progressive parts, each building on the last. It assumes no prior programming experience but rewards patience.</p>",
-      affiliateUrl: "python.html" // Direkta na sa python.html
-    },
-    { 
-      title: "Clean Code Habits", author: "M. Reyes", cat: "Programming", price: 12.99, old: 24.99, rating: 4.6, reviews: 891, color: "#3a6b4a",
-      hook: "Write code that humans can read. Stop writing spaghetti and start building maintainable systems.",
-      sample: "<p>The difference between a junior and a senior developer isn't how fast they write code, but how easily they can delete it. Good code is easy to change.</p><p>In this chapter, we look at naming conventions that save hours of debugging...</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE1/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "The Quiet Algorithm", author: "L. Tan", cat: "Programming", price: 9.99, old: null, rating: 4.4, reviews: 132, color: "#5a4a7a",
-      hook: "A thriller about a mathematician who discovers a pattern that predicts human behavior.",
-      sample: "<p>Dr. Aris stared at the whiteboard. The numbers didn't just add up; they seemed to breathe. He erased the last digit and wrote it again. It changed.</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE2/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "Seven Days to Focus", author: "A. Cruz", cat: "Self-Help", price: 7.99, old: 14.99, rating: 4.7, reviews: 1203, color: "#c4552a",
-      hook: "Reclaim your attention in a world designed to distract you.",
-      sample: "<p>You wake up. Before your feet touch the floor, your hand reaches for the phone. Forty-seven notifications. This is the battlefield of the modern mind.</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE3/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "The Art of Slow Living", author: "J. Lim", cat: "Self-Help", price: 6.99, old: null, rating: 4.3, reviews: 540, color: "#8a6b3a",
-      hook: "A gentle guide to doing less, but better.",
-      sample: "<p>We are taught to optimize everything. Our calendars, our meals, our sleep. But what if the goal isn't efficiency? What if the goal is presence?</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE4/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "Midnight in Manila", author: "R. Santos", cat: "Fiction", price: 11.99, old: 18.99, rating: 4.9, reviews: 3021, color: "#7a2a3a",
-      hook: "A detective, a missing heiress, and a city that never sleeps.",
-      sample: "<p>The rain in Manila doesn't fall; it attacks. I stood under the neon sign of a closed bar, watching the water turn the streets into mirrors. She was supposed to meet me here.</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE5/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "The Last Lighthouse", author: "E. Villar", cat: "Fiction", price: 8.99, old: null, rating: 4.5, reviews: 765, color: "#2a5a6a",
-      hook: "When the light goes out, who will guide them home?",
-      sample: "<p>The sea was calm that morning, which made it worse. A calm sea hides its teeth until it's too late. Old Thomas knew this, so he checked the bulb one last time.</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE6/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "Letters from the Sea", author: "C. Bautista", cat: "Fiction", price: 0, old: 12.99, rating: 4.2, reviews: 410, color: "#3a5a8a", badge: "FREE",
-      hook: "A collection of short stories about love, loss, and the ocean.",
-      sample: "<p>The bottle washed ashore on a Tuesday. Inside was a letter, water-stained but legible, written in a language she didn't recognize but somehow understood.</p>",
-      affiliateUrl: "#"
-    },
-    { 
-      title: "Startup Small Talk", author: "D. Go", cat: "Business", price: 15.99, old: 29.99, rating: 4.6, reviews: 688, color: "#4a4a4a",
-      hook: "How to network without feeling like a fraud.",
-      sample: "<p>I was sweating through my shirt. The investor was looking at my pitch deck, and I realized I had misspelled 'Revenue'. The silence was deafening.</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE7/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "The Lean Habit", author: "P. Uy", cat: "Business", price: 10.99, old: null, rating: 4.4, reviews: 233, color: "#6a5a3a",
-      hook: "Build a business that doesn't consume your life.",
-      sample: "<p>Every founder wants to scale. But what if scaling isn't the answer? What if the answer is staying small enough to stay sane?</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE8/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "A Brief History of Stars", author: "N. Fernandez", cat: "Science", price: 13.99, old: 22.99, rating: 4.8, reviews: 1544, color: "#2a3a5a",
-      hook: "From the Big Bang to black holes, a journey through the cosmos.",
-      sample: "<p>When you look at a star, you are looking into the past. The light hitting your eye left that star years, centuries, or even millennia ago.</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE9/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "The Cell Speaks", author: "H. Ong", cat: "Science", price: 9.99, old: null, rating: 4.5, reviews: 320, color: "#3a6a5a",
-      hook: "The hidden intelligence inside every living thing.",
-      sample: "<p>Every cell in your body is a complex factory, running on instructions older than humanity. They are constantly talking to each other.</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE10/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "Seven Stories of Love", author: "Various", cat: "Fiction", price: 5.99, old: 9.99, rating: 4.1, reviews: 88, color: "#8a3a5a",
-      hook: "Seven authors. Seven kinds of love. One unforgettable anthology.",
-      sample: "<p>Love isn't always grand gestures. Sometimes it's a warm cup of coffee left on the counter, or a silent understanding across a crowded room.</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE11/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "The Data Mindset", author: "K. Chua", cat: "Programming", price: 14.99, old: 26.99, rating: 4.7, reviews: 1204, color: "#2a4a7a",
-      hook: "Stop guessing. Start measuring. Turn data into decisions.",
-      sample: "<p>Data doesn't speak for itself. It requires a translator. The most valuable skill in the modern workforce isn't coding; it's asking the right questions.</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE12/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "Quiet Leadership", author: "S. Mercado", cat: "Business", price: 11.99, old: null, rating: 4.5, reviews: 512, color: "#5a4a3a",
-      hook: "Lead without shouting. Influence without authority.",
-      sample: "<p>The loudest person in the room rarely has the best idea. Often, the best leaders are the ones who listen more than they speak.</p>",
-      affiliateUrl: "https://www.amazon.com/dp/B00EXAMPLE13/?tag=YOUR_AFFILIATE_TAG-20"
-    },
-    { 
-      title: "The Psychology of Habit", author: "T. Reyes", cat: "Self-Help", price: 0, old: 16.99, rating: 4.6, reviews: 2044, color: "#6a3a4a", badge: "FREE",
-      hook: "Why we do what we do, and how to change it.",
-      sample: "<p>Habits are the compound interest of self-improvement. A 1% change every day might seem small, but over a year, it compounds into a 37x improvement.</p>",
-      affiliateUrl: "#"
-    }
-  ];
-
-  let activeCat = "All";
-
-  const cats = ["All", ...new Set(books.map(b => b.cat))];
-  const catBar = document.getElementById("categoryBar");
-  catBar.innerHTML = cats.map(c =>
-    `<div class="cat ${c === 'All' ? 'active' : ''}" data-cat="${c}" onclick="setCat('${c}')">${c}</div>`
-  ).join("");
-
-  function setCat(cat) {
-    activeCat = cat;
-    document.querySelectorAll(".cat").forEach(el => {
-      el.classList.toggle("active", el.dataset.cat === cat);
-    });
-    renderBooks();
-  }
-
-  function resetFilter() {
-    activeCat = "All";
-    document.getElementById("searchInput").value = "";
-    document.querySelectorAll(".cat").forEach(el => {
-      el.classList.toggle("active", el.dataset.cat === "All");
-    });
-    renderBooks();
-  }
-
-  function scrollToBooks() {
-    document.querySelector("main").scrollIntoView({ behavior: "smooth" });
-  }
-
-  function renderBooks() {
-    const q = document.getElementById("searchInput").value.toLowerCase().trim();
-    let list = books;
-    if (activeCat !== "All") list = list.filter(b => b.cat === activeCat);
-    if (q) {
-      list = list.filter(b =>
-        b.title.toLowerCase().includes(q) ||
-        b.author.toLowerCase().includes(q) ||
-        b.cat.toLowerCase().includes(q)
-      );
-    }
-
-    const grid = document.getElementById("bookGrid");
-    document.getElementById("sectionTitle").textContent =
-      activeCat === "All" ? "All Books" : activeCat;
-    document.getElementById("bookCount").textContent =
-      list.length + " title" + (list.length === 1 ? "" : "s");
-
-    if (list.length === 0) {
-      grid.innerHTML = `<div class="empty"><h3>No books found</h3><p>Try a different search or category.</p></div>`;
-      return;
-    }
-
-    grid.innerHTML = list.map(b => {
-      const priceHTML = b.price === 0
-        ? `<span class="price">Free</span>`
-        : `<span class="price">${b.old ? `<span class="old">$${b.old.toFixed(2)}</span>` : ""}$${b.price.toFixed(2)}</span>`;
-      const isReadable = b.id === "python";
-      
-      // Kung Python Book, deretso sa python.html. Kung dili, openDetails modal.
-      const btnAction = isReadable ? `window.location.href='python.html'` : `openDetails(${books.indexOf(b)})`;
-
-      return `
-        <div class="book" onclick="${btnAction}">
-          <div class="cover" style="background: linear-gradient(160deg, ${b.color}, ${shade(b.color, -25)});">
-            <div class="spine"></div>
-            ${b.badge ? `<div class="badge">${b.badge}</div>` : ""}
-            <div class="title">${b.title}</div>
-            <div class="author">${b.author}</div>
-          </div>
-          <div class="book-info">
-            <div class="book-title">${b.title}</div>
-            <div class="book-author">${b.author} · ${b.cat}</div>
-            <div class="rating">★★★★★ <span>${b.rating} (${b.reviews})</span></div>
-            <div class="price-row">
-              ${priceHTML}
-              <button class="add-btn" onclick="event.stopPropagation(); ${btnAction}">
-                ${isReadable ? "Read" : "Details"}
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join("");
-  }
-
-  function shade(hex, percent) {
-    const num = parseInt(hex.replace("#",""), 16);
-    const amt = Math.round(2.55 * percent);
-    const R = Math.max(0, Math.min(255, (num >> 16) + amt));
-    const G = Math.max(0, Math.min(255, (num >> 8 & 0x00FF) + amt));
-    const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
-    return "#" + (0x1000000 + R*0x10000 + G*0x100 + B).toString(16).slice(1);
-  }
-
-  /* ---------- DETAILS MODAL LOGIC ---------- */
-  function openDetails(index) {
-    const b = books[index];
-    const content = document.getElementById("detailsContent");
-    
-    // Kung python book, balik sa python.html
-    if (b.id === "python") {
-        window.location.href = "python.html";
-        return;
-    }
-
-    let actionHTML = "";
-    if (b.affiliateUrl && b.affiliateUrl !== "#") {
-      actionHTML = `
-        <div class="buy-action">
-          <p style="margin-bottom:12px; font-weight:600;">Get the full book here:</p>
-          <a href="${b.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="buy-btn-amazon">
-            🛒 Buy on Amazon
-          </a>
-          <p class="buy-note">As an Amazon Associate, we earn from qualifying purchases.</p>
-        </div>
-      `;
-    } else {
-      actionHTML = `
-        <div class="buy-action">
-          <button class="btn btn-primary" onclick="alert('This book is free, but the full download is coming soon!')">Read Full Book (Coming Soon)</button>
-        </div>
-      `;
-    }
-
-    content.innerHTML = `
-      <div class="details-header">
-        <div class="details-cover" style="background: linear-gradient(160deg, ${b.color}, ${shade(b.color, -25)});">
-          <div class="title">${b.title}</div>
-        </div>
-        <div class="details-meta">
-          <h2>${b.title}</h2>
-          <div class="author">by ${b.author}</div>
-          <div class="rating">★★★★★ <span>${b.rating} (${b.reviews} reviews)</span></div>
-          <div style="margin-top:10px; font-weight:bold; font-size:1.2rem; color:var(--accent);">
-            ${b.price === 0 ? "Free" : "$" + b.price.toFixed(2)}
-          </div>
-        </div>
-      </div>
-      
-      <div class="hook-box">
-        "${b.hook}"
-      </div>
-
-      <div class="sample-text">
-        <h4 style="margin-bottom:10px; font-family:sans-serif; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-size:0.85rem;">Read a Sample</h4>
-        ${b.sample}
-      </div>
-
-      ${actionHTML}
-    `;
-
-    document.getElementById("detailsOverlay").classList.add("open");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeDetails() {
-    document.getElementById("detailsOverlay").classList.remove("open");
-    document.body.style.overflow = "";
-  }
-
-  /* ---------- CART LOGIC ---------- */
-  function toggleCart() {
-    document.getElementById('cartOverlay').classList.toggle('open');
-    document.getElementById('cartDrawer').classList.toggle('open');
-  }
-
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape") {
-      closeDetails();
-      if (document.getElementById('cartDrawer').classList.contains('open')) toggleCart();
-    }
-  });
-
-  /* ---------- INIT ---------- */
-  renderBooks();
-</script>
 
 </body>
 </html>
