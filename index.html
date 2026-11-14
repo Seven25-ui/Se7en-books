@@ -114,10 +114,11 @@
   .check-row { display: flex; gap: 1rem; align-items: center; font-size: 0.85rem; font-weight: 600; }
   .check-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
 
-  /* ---------- PYTHON TERMINAL (NEW) ---------- */
+  /* ---------- PYTHON TERMINAL ---------- */
   .terminal-section { max-width: 1000px; margin: 0 auto 4rem; padding: 0 2rem; }
   .terminal-window {
-    border: var(--border-thick); background: var(--ink); color: #00ffcc;
+    border: 4px solid var(--ink); /* FIXED: Gigamit ang 4px solid imbes nga var(--border-thick) */
+    background: var(--ink); color: #00ffcc;
     box-shadow: 8px 8px 0 var(--accent); overflow: hidden;
     font-family: var(--font-mono);
   }
@@ -140,6 +141,14 @@
     color: #00ffcc; font-family: var(--font-mono); font-size: 0.95rem;
   }
   .term-error { color: #ff5555; }
+
+  /* Example Buttons */
+  .example-btn {
+    background: transparent; border: 1px solid #444; color: #aaa;
+    padding: 2px 8px; font-family: var(--font-mono); font-size: 0.75rem;
+    cursor: pointer; border-radius: 3px; transition: all 0.2s;
+  }
+  .example-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   /* ---------- FEATURED BOOK ---------- */
   .dossier-section { max-width: 1200px; margin: 4rem auto; padding: 0 2rem; }
@@ -170,15 +179,6 @@
     .nav-links { display: none; }
     .section-header h2 { font-size: 1.8rem; }
   }
-
-    /* Example Buttons */
-  .example-btn {
-    background: transparent; border: 1px solid #444; color: #aaa;
-    padding: 2px 8px; font-family: var(--font-mono); font-size: 0.75rem;
-    cursor: pointer; border-radius: 3px; transition: all 0.2s;
-  }
-  .example-btn:hover { border-color: var(--accent); color: var(--accent); }
-   
 </style>
 </head>
 <body>
@@ -282,7 +282,7 @@
   </div>
 </div>
 
-<!-- NEW: CYBER TOOLKIT SECTION -->
+<!-- CYBER TOOLKIT SECTION -->
 <div class="section-header" id="toolkit">
   <h2>Cyber Toolkit</h2>
   <span style="font-size: 0.9rem;">[ INTERACTIVE ]</span>
@@ -339,7 +339,7 @@
   </div>
 </div>
 
-  <!-- INTERACTIVE PYTHON TERMINAL -->
+<!-- INTERACTIVE PYTHON TERMINAL -->
 <div class="section-header" id="terminal">
   <h2>Python Terminal</h2>
   <span style="font-size: 0.9rem;">[ LIVE ENGINE ]</span>
@@ -357,12 +357,15 @@
     </div>
     
     <!-- Quick Examples Buttons -->
-    <div style="padding: 0.5rem 1rem; background: #111; border-top: 1px solid #333; display: flex; gap: 10px; flex-wrap: wrap;">
-      <span style="font-size: 0.75rem; color: #888; align-self: center;">Examples:</span>
+    <div style="padding: 0.5rem 1rem; background: #111; border-top: 1px solid #333; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+      <span style="font-size: 0.75rem; color: #888;">Examples:</span>
       <button class="example-btn" onclick="insertExample('print(\"Hello, Seven!\")')">Hello World</button>
       <button class="example-btn" onclick="insertExample('2 ** 10 + 5')">Math</button>
       <button class="example-btn" onclick="insertExample('for i in range(5):\\n    print(\"Loop:\", i)')">For Loop</button>
       <button class="example-btn" onclick="insertExample('import math\\nmath.sqrt(144)')">Math Module</button>
+      
+      <!-- FIXED: Naapil na ang Clear Button -->
+      <button class="example-btn" onclick="clearTerminal()" style="margin-left: auto; border-color: #ff5555; color: #ff5555;">Clear</button>
     </div>
 
     <div class="term-input-row">
@@ -458,7 +461,7 @@
     });
   }
 
-    /* =========================================
+  /* =========================================
      PYTHON TERMINAL LOGIC (PYODIDE)
      ========================================= */
   const termBody = document.getElementById('termBody');
@@ -551,8 +554,6 @@
       alert("Python is still loading. Please wait a moment.");
       return;
     }
-    // Kay ang examples naay multi-line (sama sa for loop), ato nalang i-deretso og execute
-    // imbes nga ibutang sa single-line input.
     executeCode(code);
   }
 
