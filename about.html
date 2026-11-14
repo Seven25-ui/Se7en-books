@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About SEVEN — Operator Profile</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FF4D00'/><text y='.9em' x='10' font-size='90' fill='%230F0F0F'>7</text></svg>">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #F4F4F0;
+    --ink: #0F0F0F;
+    --accent: #FF4D00;
+    --accent-blue: #0000FF;
+    --border: 2px solid var(--ink);
+    --border-thick: 4px solid var(--ink);
+    --shadow: 6px 6px 0px var(--ink);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  /* ---------- NAVBAR ---------- */
+  header {
+    background: var(--bg); border-bottom: var(--border-thick);
+    position: sticky; top: 0; z-index: 100; padding: 1rem 2rem;
+  }
+  .nav-inner {
+    max-width: 1000px; margin: 0 auto; 
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .btn-back {
+    font-family: var(--font-mono); font-weight: 600; font-size: 0.9rem;
+    padding: 8px 16px; border: var(--border); background: #fff;
+    box-shadow: 3px 3px 0 var(--ink); transition: all 0.15s;
+    text-transform: uppercase;
+  }
+  .btn-back:hover {
+    background: var(--ink); color: #fff;
+    box-shadow: 0px 0px 0 var(--ink); transform: translate(3px, 3px);
+  }
+  .nav-title {
+    font-family: var(--font-display); font-weight: 700; font-size: 1.2rem;
+    text-transform: uppercase; letter-spacing: -0.5px;
+  }
+
+  /* ---------- MAIN LAYOUT ---------- */
+  .container { max-width: 1000px; margin: 4rem auto; padding: 0 2rem; }
+
+  /* Header Box */
+  .profile-header {
+    background: var(--ink); color: var(--bg);
+    border: var(--border-thick); box-shadow: 8px 8px 0 var(--accent);
+    padding: 3rem 2rem; text-align: center; margin-bottom: 4rem;
+    position: relative; overflow: hidden;
+  }
+  .profile-header::before {
+    content: '<SEC_LEVEL: MAX>';
+    position: absolute; top: 10px; left: 15px;
+    font-size: 0.8rem; color: #555; font-family: var(--font-mono);
+  }
+  .profile-header::after {
+    content: 'USER: ROOT';
+    position: absolute; top: 10px; right: 15px;
+    font-size: 0.8rem; color: #555; font-family: var(--font-mono);
+  }
+  .profile-header h1 {
+    font-family: var(--font-display); font-size: 3.5rem; line-height: 1; 
+    margin-bottom: 1rem; text-transform: uppercase; letter-spacing: -1px;
+    color: var(--accent);
+  }
+  .profile-header p {
+    font-size: 1.1rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  }
+
+  /* Manifesto Box */
+  .manifesto {
+    border: var(--border-thick); background: #fff; box-shadow: var(--shadow);
+    padding: 2.5rem; margin-bottom: 4rem;
+  }
+  .manifesto h2 {
+    font-family: var(--font-display); font-size: 2rem; margin-bottom: 1.5rem;
+    border-bottom: var(--border); padding-bottom: 1rem; text-transform: uppercase;
+  }
+  .manifesto p {
+    font-size: 1.1rem; margin-bottom: 1.2rem;
+  }
+  .manifesto .highlight {
+    background: var(--accent); color: #fff; padding: 0 5px; font-weight: 600;
+  }
+
+  /* Core Directives Grid */
+  .section-title {
+    font-family: var(--font-display); font-size: 2.2rem; 
+    border-bottom: var(--border-thick); padding-bottom: 0.8rem; margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+  
+  .directives-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem; margin-bottom: 4rem;
+  }
+  .directive-card {
+    border: var(--border); background: #fff; box-shadow: 4px 4px 0 var(--ink);
+    padding: 2rem; transition: transform 0.2s;
+  }
+  .directive-card:hover { transform: translateY(-5px); }
+  .directive-card h3 {
+    font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 1rem;
+    color: var(--accent-blue);
+  }
+  .directive-card p { font-size: 0.95rem; }
+
+  /* Tech Stack */
+  .stack-container {
+    border: var(--border-thick); background: #fff; box-shadow: var(--shadow);
+    padding: 2.5rem; margin-bottom: 4rem;
+  }
+  .stack-container h2 {
+    font-family: var(--font-display); font-size: 2rem; margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+  .stack-grid {
+    display: flex; flex-wrap: wrap; gap: 15px;
+  }
+  .stack-badge {
+    background: var(--bg); border: var(--border); padding: 8px 16px;
+    font-family: var(--font-mono); font-weight: 600; font-size: 0.9rem;
+    box-shadow: 2px 2px 0 var(--ink); display: flex; align-items: center; gap: 8px;
+    transition: all 0.15s;
+  }
+  .stack-badge:hover {
+    background: var(--ink); color: var(--bg); transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ink);
+  }
+
+  /* Contact / Action */
+  .action-section {
+    text-align: center; border: var(--border-thick); background: var(--accent);
+    color: #fff; box-shadow: 8px 8px 0 var(--ink); padding: 3rem 2rem;
+  }
+  .action-section h2 { font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 1rem; }
+  .action-section p { font-size: 1.1rem; margin-bottom: 2rem; }
+  .btn-github {
+    display: inline-block; background: var(--ink); color: #fff;
+    padding: 1rem 2rem; border: var(--border-thick); font-family: var(--font-display);
+    font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+    box-shadow: 4px 4px 0 #fff; transition: all 0.15s;
+  }
+  .btn-github:hover {
+    transform: translate(4px, 4px); box-shadow: 0px 0px 0 #fff;
+  }
+
+  /* Footer */
+  footer {
+    border-top: var(--border); background: var(--ink); color: var(--bg);
+    padding: 2rem; text-align: center; margin-top: 4rem; font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .container { padding: 0 1rem; }
+    .profile-header h1 { font-size: 2.5rem; }
+    .profile-header::before, .profile-header::after { display: none; }
+    .manifesto, .stack-container { padding: 1.5rem; }
+    .action-section h2 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="btn-back">← Return to Hub</a>
+    <div class="nav-title">OPERATOR_PROFILE // SEVEN</div>
+  </div>
+</header>
+
+<div class="container">
+  
+  <!-- PROFILE HEADER -->
+  <div class="profile-header">
+    <h1>SEVEN</h1>
+    <p>Python Engineer & Cybersecurity Enthusiast</p>
+  </div>
+
+  <!-- MANIFESTO -->
+  <div class="manifesto">
+    <h2>// The Manifesto</h2>
+    <p>I don't just write code. I build systems.</p>
+    <p>In a world where data is the new currency, my mission is simple: <span class="highlight">engineer secure, automated, and resilient infrastructures</span> using Python and modern security principles.</p>
+    <p>This hub is a reflection of that mindset. It's not a blog. It's not a portfolio. It's a **toolkit**—a centralized command center for learning, testing, and building. Whether you are here to learn Python from scratch, test your cryptography tools, or just explore the live terminal, you are in the right place.</p>
+  </div>
+
+  <!-- CORE DIRECTIVES -->
+  <h2 class="section-title">Core Directives</h2>
+  <div class="directives-grid">
+    
+    <div class="directive-card">
+      <h3>// Automate Everything</h3>
+      <p>If a task takes more than 3 minutes and you have to do it twice, write a Python script for it. Efficiency is not a luxury; it's a requirement.</p>
+    </div>
+
+    <div class="directive-card">
+      <h3>// Security First</h3>
+      <p>From cryptography to network defense, I build with the attacker's mindset. The best defense is understanding how the offense operates.</p>
+    </div>
+
+    <div class="directive-card">
+      <h3>// Open Source Mind</h3>
+      <p>Knowledge should be free. The Python Book is open, the tools are client-side, and the code is available on GitHub for anyone to learn from.</p>
+    </div>
+
+  </div>
+
+  <!-- TECH STACK -->
+  <div class="stack-container">
+    <h2>// Operational Stack</h2>
+    <div class="stack-grid">
+      <div class="stack-badge">🐍 Python 3.12</div>
+      <div class="stack-badge">💻 Bash / Linux</div>
+      <div class="stack-badge">🌐 HTML / CSS / JS</div>
+      <div class="stack-badge">🛡️ Pyodide (WebAssembly)</div>
+      <div class="stack-badge">🔐 Cryptography (Fernet)</div>
+      <div class="stack-badge">🕸️ BeautifulSoup / Scrapy</div>
+      <div class="stack-badge">🛠️ Git & GitHub</div>
+      <div class="stack-badge">🔍 OSINT Tools</div>
+    </div>
+  </div>
+
+  <!-- ACTION -->
+  <div class="action-section">
+    <h2>Want to see the code?</h2>
+    <p>Everything you see here is open source. Inspect the logic. Fork the repo. Build your own.</p>
+    <a href="https://github.com/seven25-ui" target="_blank" class="btn-github">View GitHub Profile</a>
+  </div>
+
+</div>
+
+<footer>
+  <p>&copy; 2026 Seven Engineering Hub. All systems operational.</p>
+</footer>
+
+</body>
+</html>
