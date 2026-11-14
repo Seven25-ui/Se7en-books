@@ -170,6 +170,15 @@
     .nav-links { display: none; }
     .section-header h2 { font-size: 1.8rem; }
   }
+
+    /* Example Buttons */
+  .example-btn {
+    background: transparent; border: 1px solid #444; color: #aaa;
+    padding: 2px 8px; font-family: var(--font-mono); font-size: 0.75rem;
+    cursor: pointer; border-radius: 3px; transition: all 0.2s;
+  }
+  .example-btn:hover { border-color: var(--accent); color: var(--accent); }
+   
 </style>
 </head>
 <body>
@@ -330,7 +339,7 @@
   </div>
 </div>
 
-<!-- NEW: INTERACTIVE PYTHON TERMINAL -->
+  <!-- INTERACTIVE PYTHON TERMINAL -->
 <div class="section-header" id="terminal">
   <h2>Python Terminal</h2>
   <span style="font-size: 0.9rem;">[ LIVE ENGINE ]</span>
@@ -346,6 +355,16 @@
       <div class="term-line" style="color: #888;">Python 3.12.0 (WebAssembly) [Pyodide]</div>
       <div class="term-line" style="color: #888;">Type Python code and press Enter. Try: <code style="color:#fff;">print("Hello, Seven!")</code></div>
     </div>
+    
+    <!-- Quick Examples Buttons -->
+    <div style="padding: 0.5rem 1rem; background: #111; border-top: 1px solid #333; display: flex; gap: 10px; flex-wrap: wrap;">
+      <span style="font-size: 0.75rem; color: #888; align-self: center;">Examples:</span>
+      <button class="example-btn" onclick="insertExample('print(\"Hello, Seven!\")')">Hello World</button>
+      <button class="example-btn" onclick="insertExample('2 ** 10 + 5')">Math</button>
+      <button class="example-btn" onclick="insertExample('for i in range(5):\\n    print(\"Loop:\", i)')">For Loop</button>
+      <button class="example-btn" onclick="insertExample('import math\\nmath.sqrt(144)')">Math Module</button>
+    </div>
+
     <div class="term-input-row">
       <span>&gt;&gt;&gt;</span>
       <input type="text" id="termInput" placeholder="print('Hello, World!')" autocomplete="off" disabled>
@@ -439,7 +458,7 @@
     });
   }
 
-  /* =========================================
+    /* =========================================
      PYTHON TERMINAL LOGIC (PYODIDE)
      ========================================= */
   const termBody = document.getElementById('termBody');
@@ -480,35 +499,6 @@
     termBody.scrollTop = termBody.scrollHeight;
   }
 
-  // Handle Enter key in terminal
-  termInput.addEventListener('keydown', async (e) => {
-    if (e.key === 'Enter') {
-      const code = termInput.value;
-      if (!code.trim()) return;
-
-      // Echo the command
-      const echoDiv = document.createElement('div');
-      echoDiv.className = 'term-line';
-      echoDiv.innerHTML = `<span class="term-prompt">&gt;&gt;&gt;</span><span style="color: #fff;">${escapeHTML(code)}</span>`;
-      termBody.appendChild(echoDiv);
-      
-      // Clear input
-      termInput.value = '';
-      termBody.scrollTop = termBody.scrollHeight;
-
-      if (pyodideReady) {
-        try {
-          // Run Python code
-          await window.pyodide.runPythonAsync(code);
-        } catch (err) {
-          appendTermLine(err.message, '#ff5555');
-        }
-      } else {
-        appendTermLine("Python is still loading. Please wait.", '#ff5555');
-      }
-    }
-  });
-
   // Helper to prevent HTML injection in terminal echo
   function escapeHTML(str) {
     return str.replace(/[&<>'"]/g, 
@@ -521,6 +511,60 @@
       }[tag] || tag)
     );
   }
+
+  // Function aron makadagan og code (gigamit sa Enter key ug sa Examples)
+  async function executeCode(code) {
+    if (!code.trim()) return;
+
+    // 1. Echo the command sa terminal
+    const echoDiv = document.createElement('div');
+    echoDiv.className = 'term-line';
+    // Kinahanglan i-escape ang HTML unya i-convert ang newline ngadto sa <br> aron mo-format og tarong
+    echoDiv.innerHTML = `<span class="term-prompt">&gt;&gt;&gt;</span><span style="color: #fff;">${escapeHTML(code).replace(/\n/g, '<br>')}</span>`;
+    termBody.appendChild(echoDiv);
+    termBody.scrollTop = termBody.scrollHeight;
+
+    // 2. Run the Python code
+    if (pyodideReady) {
+      try {
+        await window.pyodide.runPythonAsync(code);
+      } catch (err) {
+        appendTermLine(err.message, '#ff5555');
+      }
+    } else {
+      appendTermLine("Python is still loading. Please wait.", '#ff5555');
+    }
+  }
+
+  // Handle Enter key in terminal
+  termInput.addEventListener('keydown', async (e) => {
+    if (e.key === 'Enter') {
+      const code = termInput.value;
+      termInput.value = ''; // Clear input dayon
+      await executeCode(code);
+    }
+  });
+
+  // Function para sa "Quick Examples" Buttons
+  function insertExample(code) {
+    if (!pyodideReady) {
+      alert("Python is still loading. Please wait a moment.");
+      return;
+    }
+    // Kay ang examples naay multi-line (sama sa for loop), ato nalang i-deretso og execute
+    // imbes nga ibutang sa single-line input.
+    executeCode(code);
+  }
+
+  // Function para i-clear ang terminal screen
+  function clearTerminal() {
+    termBody.innerHTML = `
+      <div class="term-line" style="color: #888;">Python 3.12.0 (WebAssembly) [Pyodide]</div>
+      <div class="term-line" style="color: #888;">Type Python code and press Enter. Try: <code style="color:#fff;">print("Hello, Seven!")</code></div>
+    `;
+    termInput.focus();
+  }
+
 </script>
 
 </body>
