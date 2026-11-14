@@ -9,7 +9,7 @@
 > **"Engineer the Future."** 
 > A highly specialized, static web hub for Python scripting, system automation, and offensive/defensive cybersecurity engineering.
 
-🔗 **Live Website:** [https://seven25-ui.github.io/Se7en-books/](https://hub.sevengigs.online/)
+🔗 **Live Website:** [https://hub.sevengigs.online/](https://hub.sevengigs.online/)
 
 ---
 
