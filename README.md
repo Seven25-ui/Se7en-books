@@ -35,11 +35,50 @@ This project is built with a **Neo-Brutalist** design system (Cream, Ink Black, 
 
 ## 📂 Project Structure
 
-```text
-Se7en-books/
-│
-├── index.html          # Main landing page (Neo-Brutalist UI, Terminal, Toolkit)
-├── python.html         # The Seven Python Book (Documentation layout)
-├── modules.html        # Core Modules (Tabbed SPA layout for learning materials)
-├── README.md           # This file
-└── assets/             # (Optional) Images or additional CSS/JS files
+Since this is a fully static website, there is no build step or backend required. 
+
+    Se7en-books/
+    │
+    ├── index.html          # Main landing page (Neo-Brutalist UI, Terminal, Toolkit)
+    ├── python.html         # The Seven Python Book (Documentation layout)
+    ├── modules.html        # Core Modules (Tabbed SPA layout for learning materials)
+    ├── README.md           # This file
+    └── assets/             # (Optional) Images or additional CSS/JS files
+
+---
+
+## 🚀 How to Run Locally
+
+1. Clone the repository:
+   git clone https://github.com/seven25-ui/Se7en-books.git
+
+2. Navigate to the folder:
+   cd Se7en-books
+
+3. Open the website: 
+   Simply double-click `index.html` to open it in your browser. 
+   *(Tip: If you are using VS Code, use the "Live Server" extension for hot-reloading).*
+
+---
+
+## ⚠️ Ethical Disclaimer
+
+**The cybersecurity tools, scripts, and concepts provided on this website are for educational purposes and authorized testing only.**
+
+*   Do not use these scripts to attack targets without prior mutual consent.
+*   The author is not responsible for any misuse or damage caused by the information provided here.
+*   Always practice **Ethical Hacking**. Think like an attacker, defend like a pro.
+
+---
+
+## 🧑‍💻 Author
+
+**Seven** 
+*   GitHub: [@seven25-ui](https://github.com/seven25-ui)
+*   Live Demo: [Se7en Books](https://seven25-ui.github.io/Se7en-books/)
+
+---
+
+## 📝 License
+
+This project is open-source and available under the [MIT License](LICENSE).
