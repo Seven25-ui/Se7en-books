@@ -3,50 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seven | Python & Cyber Security</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👾</text></svg>">
+<title>SEVEN — Python & Cybersecurity Engineering</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FF4D00'/><text y='.9em' x='10' font-size='90' fill='%230F0F0F'>7</text></svg>">
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --bg: #0a0a0f;
-    --surface: #12121a;
-    --border: #2a2a3a;
-    --primary: #00ffcc; /* Neon Cyan */
-    --primary-dark: #00ccaa;
-    --secondary: #ff3366; /* Cyber Pink/Red */
-    --text: #e0e0e0;
-    --muted: #888899;
-    --font-mono: 'Fira Code', monospace;
-    --font-sans: 'Inter', sans-serif;
+    --bg: #F4F4F0;         /* Off-white/Cream */
+    --ink: #0F0F0F;        /* Near Black */
+    --accent: #FF4D00;     /* Safety Orange */
+    --accent-blue: #0000FF;/* Electric Blue */
+    --border: 2px solid var(--ink);
+    --shadow: 6px 6px 0px var(--ink);
+    --shadow-hover: 2px 2px 0px var(--ink);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
   body {
     background-color: var(--bg);
-    color: var(--text);
-    font-family: var(--font-sans);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 15px;
     line-height: 1.6;
     overflow-x: hidden;
-    /* Subtle grid background */
-    background-image: 
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 30px 30px;
   }
 
   a { text-decoration: none; color: inherit; }
 
+  /* ---------- TOP MARQUEE ---------- */
+  .marquee-wrapper {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 8px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border-bottom: var(--border);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .marquee-content {
+    display: inline-block;
+    animation: marquee 20s linear infinite;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
   /* ---------- NAVBAR ---------- */
   header {
-    border-bottom: 1px solid var(--border);
-    background: rgba(10, 10, 15, 0.9);
-    backdrop-filter: blur(10px);
+    background: var(--bg);
+    border-bottom: var(--border);
     position: sticky; top: 0; z-index: 100;
   }
   .nav-inner {
@@ -54,291 +69,283 @@
     display: flex; justify-content: space-between; align-items: center;
   }
   .logo {
-    font-family: var(--font-mono);
-    font-size: 1.4rem; font-weight: 600; color: var(--primary);
-    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-display);
+    font-size: 2rem; font-weight: 700; letter-spacing: -1px;
+    display: flex; align-items: center; gap: 10px;
   }
-  .logo::before { content: '>_'; color: var(--muted); }
-  .nav-links { display: flex; gap: 2rem; font-family: var(--font-mono); font-size: 0.9rem; }
-  .nav-links a { color: var(--muted); transition: color 0.2s; position: relative; }
-  .nav-links a:hover { color: var(--primary); }
-  .nav-links a::after {
-    content: ''; position: absolute; bottom: -4px; left: 0; width: 0%; height: 2px;
-    background: var(--primary); transition: width 0.3s;
+  .logo-box {
+    background: var(--ink); color: var(--bg);
+    width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;
+    font-size: 1.5rem; border: var(--border);
   }
-  .nav-links a:hover::after { width: 100%; }
+  .nav-links { display: flex; gap: 1.5rem; font-weight: 600; }
+  .nav-links a {
+    padding: 0.5rem 1rem; border: 1px solid transparent; transition: all 0.2s;
+  }
+  .nav-links a:hover {
+    border: var(--border); background: var(--accent); color: #fff;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
 
-  /* ---------- HERO / TERMINAL ---------- */
+  /* ---------- HERO SECTION ---------- */
   .hero {
-    padding: 6rem 2rem 4rem; max-width: 1000px; margin: 0 auto;
-    display: flex; flex-direction: column; align-items: center; text-align: center;
+    max-width: 1200px; margin: 0 auto; padding: 6rem 2rem 4rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
   }
-  .hero h1 {
-    font-family: var(--font-mono); font-size: clamp(2rem, 5vw, 4rem);
-    font-weight: 600; color: var(--text); margin-bottom: 1rem;
-    min-height: 1.2em;
+  .hero-text h1 {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 5.5rem); line-height: 0.95; letter-spacing: -2px;
+    margin-bottom: 1.5rem; text-transform: uppercase;
   }
-  .hero h1 .highlight { color: var(--primary); }
-  .hero p {
-    font-size: 1.1rem; color: var(--muted); max-width: 600px; margin-bottom: 2.5rem;
+  .hero-text h1 span {
+    background: var(--accent); color: #fff; padding: 0 10px;
+    display: inline-block; transform: rotate(-2deg); border: var(--border);
+  }
+  .hero-text p {
+    font-size: 1.1rem; margin-bottom: 2rem; max-width: 90%;
+  }
+  .btn {
+    display: inline-block; font-family: var(--font-mono); font-weight: 600;
+    padding: 1rem 2rem; border: var(--border); background: var(--bg);
+    box-shadow: var(--shadow); cursor: pointer; transition: all 0.15s;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .btn:hover { box-shadow: var(--shadow-hover); transform: translate(4px, 4px); background: var(--accent); color: #fff; }
+  .btn-primary { background: var(--ink); color: var(--bg); }
+  .btn-primary:hover { background: var(--accent-blue); color: #fff; }
+
+  /* Hero Visual (Bento Box Preview) */
+  .hero-visual {
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto;
+    gap: 1rem;
+  }
+  .bento-item {
+    border: var(--border); padding: 1.5rem; background: #fff;
+    box-shadow: 4px 4px 0 var(--ink); display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .bento-item.large { grid-column: span 2; background: var(--accent); color: #fff; }
+  .bento-item h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .bento-item .tag { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; border: 1px solid currentColor; padding: 2px 6px; align-self: flex-start; }
+
+  /* ---------- MODULES SECTION ---------- */
+  .section-header {
+    max-width: 1200px; margin: 4rem auto 2rem; padding: 0 2rem;
+    border-bottom: 4px solid var(--ink); display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 1rem;
+  }
+  .section-header h2 {
+    font-family: var(--font-display); font-size: 2.5rem; text-transform: uppercase; letter-spacing: -1px;
   }
 
-  /* Terminal Window */
-  .terminal-window {
-    width: 100%; max-width: 700px; background: var(--surface);
-    border: 1px solid var(--border); border-radius: 8px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    overflow: hidden; text-align: left; margin-bottom: 3rem;
+  .modules-grid {
+    max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
   }
-  .terminal-header {
-    background: #1a1a24; padding: 10px 15px; display: flex; gap: 8px; border-bottom: 1px solid var(--border);
+  .module-card {
+    border: var(--border); background: #fff; padding: 2rem;
+    box-shadow: 4px 4px 0 var(--ink); transition: transform 0.2s;
+    display: flex; flex-direction: column;
   }
-  .dot { width: 12px; height: 12px; border-radius: 50%; }
-  .dot.red { background: #ff5f56; }
-  .dot.yellow { background: #ffbd2e; }
-  .dot.green { background: #27c93f; }
-  .terminal-body {
-    padding: 20px; font-family: var(--font-mono); font-size: 0.9rem;
-    line-height: 1.7; color: #d4d4d4;
+  .module-card:hover { transform: translateY(-5px); }
+  .module-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .module-card h3 { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.8rem; }
+  .module-card p { font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1; }
+  .module-card .btn-link {
+    font-weight: 600; text-transform: uppercase; font-size: 0.85rem;
+    border-bottom: 2px solid var(--accent); align-self: flex-start; padding-bottom: 2px;
+    transition: color 0.2s;
   }
-  .terminal-body .prompt { color: var(--primary); }
-  .terminal-body .cmd { color: #fff; }
-  .terminal-body .output { color: var(--muted); margin-bottom: 10px; }
-  .typing { display: inline-block; overflow: hidden; white-space: nowrap; border-right: 2px solid var(--primary); animation: typing 3s steps(40, end), blink-caret .75s step-end infinite; }
-  @keyframes typing { from { width: 0 } to { width: 100% } }
-  @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--primary) } }
+  .module-card .btn-link:hover { color: var(--accent); }
+  
+  .module-card.cyber { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .module-card.cyber .btn-link { border-bottom-color: var(--accent-blue); color: var(--accent-blue); }
+  .module-card.cyber .btn-link:hover { color: #fff; border-color: #fff; }
 
-  /* ---------- GRID / CARDS ---------- */
-  .section-title {
-    font-family: var(--font-mono); color: var(--primary);
-    font-size: 1.2rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px;
+  /* ---------- FEATURED BOOK (DOSSIER STYLE) ---------- */
+  .dossier-section {
+    max-width: 1200px; margin: 4rem auto; padding: 0 2rem;
   }
-  .section-title::before { content: '//'; color: var(--muted); }
-  
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem; }
-  
-  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-  
-  .card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-    padding: 2rem; transition: all 0.3s ease; position: relative; overflow: hidden;
+  .dossier {
+    border: 4px solid var(--ink); background: #fff;
+    box-shadow: 12px 12px 0 var(--ink);
+    display: flex; align-items: stretch; overflow: hidden;
   }
-  .card:hover {
-    transform: translateY(-5px); border-color: var(--primary);
-    box-shadow: 0 10px 30px rgba(0, 255, 204, 0.1);
-  }
-  .card::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
-    background: linear-gradient(90deg, var(--primary), transparent); opacity: 0; transition: opacity 0.3s;
-  }
-  .card:hover::before { opacity: 1; }
-  
-  .card-icon { font-size: 2rem; margin-bottom: 1rem; }
-  .card h3 { font-family: var(--font-mono); color: var(--text); margin-bottom: 0.5rem; font-size: 1.2rem; }
-  .card p { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
-  .card .btn {
-    display: inline-block; padding: 0.6rem 1.2rem; background: rgba(0, 255, 204, 0.1);
-    color: var(--primary); border: 1px solid var(--primary); border-radius: 4px;
-    font-family: var(--font-mono); font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
-  }
-  .card .btn:hover { background: var(--primary); color: #000; }
-  
-  .card-danger { border-color: rgba(255, 51, 102, 0.3); }
-  .card-danger:hover { border-color: var(--secondary); box-shadow: 0 10px 30px rgba(255, 51, 102, 0.1); }
-  .card-danger .btn { color: var(--secondary); border-color: var(--secondary); background: rgba(255, 51, 102, 0.1); }
-  .card-danger .btn:hover { background: var(--secondary); color: #fff; }
-
-  /* ---------- FEATURED BOOK ---------- */
-  .featured-book {
-    background: linear-gradient(135deg, var(--surface) 0%, #0a0a0f 100%);
-    border: 1px solid var(--border); border-radius: 12px;
-    padding: 3rem; margin-top: 4rem; display: flex; align-items: center; gap: 3rem;
-    flex-wrap: wrap; position: relative; overflow: hidden;
-  }
-  .featured-book::after {
-    content: '</>'; position: absolute; right: -20px; bottom: -40px;
-    font-size: 15rem; font-family: var(--font-mono); color: rgba(255,255,255,0.02);
-    font-weight: bold; pointer-events: none;
-  }
-  .book-cover {
-    width: 200px; height: 300px; background: #1a1a24;
-    border: 2px solid var(--primary); border-radius: 6px;
+  .dossier-left {
+    background: var(--accent); width: 250px; padding: 2rem;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    text-align: center; padding: 20px; box-shadow: 0 10px 30px rgba(0, 255, 204, 0.15);
-    position: relative; z-index: 1; flex-shrink: 0;
+    border-right: 4px solid var(--ink); color: #fff;
   }
-  .book-cover h4 { font-family: var(--font-mono); color: var(--primary); font-size: 1.2rem; margin-bottom: 8px; }
-  .book-cover span { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
-  .featured-info { flex: 1; min-width: 300px; position: relative; z-index: 1; }
-  .featured-info h2 { font-family: var(--font-mono); font-size: 2rem; color: var(--text); margin-bottom: 1rem; }
-  .featured-info p { color: var(--muted); margin-bottom: 1.5rem; font-size: 1rem; }
-  .featured-info .btn-large {
-    padding: 1rem 2rem; background: var(--primary); color: #000;
-    font-family: var(--font-mono); font-weight: bold; font-size: 1rem;
-    border-radius: 6px; border: none; cursor: pointer; transition: transform 0.2s;
-    display: inline-block;
-  }
-  .featured-info .btn-large:hover { transform: scale(1.05); background: #fff; }
+  .dossier-left h3 { font-family: var(--font-display); font-size: 2rem; text-align: center; line-height: 1; margin-bottom: 1rem; }
+  .dossier-left .version { border: 2px solid #fff; padding: 4px 12px; font-weight: 600; }
+  .dossier-right { padding: 3rem; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .dossier-right h2 { font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 1rem; text-transform: uppercase; }
+  .dossier-right p { font-size: 1.1rem; margin-bottom: 2rem; max-width: 600px; }
 
   /* ---------- FOOTER ---------- */
   footer {
-    border-top: 1px solid var(--border); padding: 3rem 2rem;
-    text-align: center; font-family: var(--font-mono); font-size: 0.9rem; color: var(--muted);
+    border-top: var(--border); background: var(--ink); color: var(--bg);
+    padding: 3rem 2rem; text-align: center; margin-top: 4rem;
   }
   footer .logo { justify-content: center; margin-bottom: 1rem; }
-  .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; }
-  .footer-links a:hover { color: var(--primary); }
+  footer .logo-box { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+  footer p { font-size: 0.9rem; opacity: 0.8; }
 
-  @media (max-width: 768px) {
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; text-align: center; padding-top: 4rem; }
+    .hero-text p { margin: 0 auto 2rem auto; }
+    .hero-visual { display: none; /* Hide bento on mobile for clean look */ }
+    .modules-grid { grid-template-columns: 1fr; }
+    .dossier { flex-direction: column; box-shadow: 8px 8px 0 var(--ink); }
+    .dossier-left { width: 100%; border-right: none; border-bottom: 4px solid var(--ink); padding: 2rem; }
+    .dossier-right { padding: 2rem; text-align: center; }
+    .dossier-right h2 { font-size: 2rem; }
+    .dossier-right .btn { margin: 0 auto; }
     .nav-links { display: none; }
-    .featured-book { padding: 2rem; flex-direction: column; text-align: center; }
-    .book-cover { margin: 0 auto; }
-    .featured-info h2 { font-size: 1.5rem; }
+    .section-header h2 { font-size: 1.8rem; }
   }
 </style>
 </head>
 <body>
 
+<!-- TOP MARQUEE -->
+<div class="marquee-wrapper">
+  <div class="marquee-content">
+    +++ PYTHON AUTOMATION +++ NETWORK DEFENSE +++ ETHICAL HACKING +++ SYSTEM ARCHITECTURE +++ ZERO TRUST SECURITY +++ OPEN SOURCE INTELLIGENCE +++ PYTHON AUTOMATION +++ NETWORK DEFENSE +++ ETHICAL HACKING +++ SYSTEM ARCHITECTURE +++ ZERO TRUST SECURITY +++ OPEN SOURCE INTELLIGENCE +++
+  </div>
+</div>
+
 <!-- NAVBAR -->
 <header>
   <div class="nav-inner">
-    <a href="#" class="logo">seven</a>
+    <a href="#" class="logo">
+      <div class="logo-box">7</div>
+      SEVEN.
+    </a>
     <div class="nav-links">
-      <a href="#python">Python</a>
-      <a href="#security">Security</a>
-      <a href="#tools">Tools</a>
-      <a href="python.html" style="color: var(--primary);">The Book</a>
+      <a href="#modules">Modules</a>
+      <a href="#manual" style="color: var(--accent);">The Manual</a>
+      <a href="#">GitHub</a>
     </div>
   </div>
 </header>
 
 <!-- HERO SECTION -->
 <section class="hero">
-  <h1 id="hero-title">Building the <span class="highlight">Future</span> with Code & Security.</h1>
-  <p>A centralized hub for Python automation, ethical hacking resources, and cybersecurity tools.</p>
-
-  <!-- Terminal Widget -->
-  <div class="terminal-window">
-    <div class="terminal-header">
-      <div class="dot red"></div>
-      <div class="dot yellow"></div>
-      <div class="dot green"></div>
+  <div class="hero-text">
+    <h1>ENGINEER THE <span>FUTURE</span></h1>
+    <p>A highly specialized hub for Python scripting, system automation, and offensive/defensive cybersecurity engineering.</p>
+    <a href="#modules" class="btn btn-primary">Initialize System</a>
+    <a href="python.html" class="btn">Read Manual</a>
+  </div>
+  
+  <!-- Decorative Bento Box (To make it look like a dashboard) -->
+  <div class="hero-visual">
+    <div class="bento-item large">
+      <div class="tag">// STATUS</div>
+      <h3>SYSTEM ONLINE</h3>
+      <p>All core modules operational. Ready to deploy.</p>
     </div>
-    <div class="terminal-body">
-      <div><span class="prompt">root@seven:~#</span> <span class="cmd">./initialize_hub.sh</span></div>
-      <div class="output">[+] Loading Python modules...</div>
-      <div class="output">[+] Establishing secure connection...</div>
-      <div class="output">[+] Bypassing firewalls... (simulated)</div>
-      <div><span class="prompt">root@seven:~#</span> <span class="typing">welcome_to_seven --secure</span></div>
+    <div class="bento-item">
+      <div class="tag">// LANG</div>
+      <h3>PYTHON 3.12</h3>
+    </div>
+    <div class="bento-item" style="background: var(--ink); color: #fff;">
+      <div class="tag" style="border-color: #fff;">// SEC</div>
+      <h3>SECURE</h3>
     </div>
   </div>
 </section>
 
-<!-- MAIN CONTENT -->
-<div class="container">
+<!-- MODULES SECTION -->
+<div class="section-header" id="modules">
+  <h2>Core Modules</h2>
+  <span style="font-size: 0.9rem;">[ 01 - 06 ]</span>
+</div>
+
+<div class="modules-grid">
+  <!-- Python -->
+  <div class="module-card">
+    <div class="module-icon">🐍</div>
+    <h3>Python Scripting</h3>
+    <p>Master automation, data parsing, and custom tool development using the world's most versatile language.</p>
+    <a href="python.html" class="btn-link">Access Docs →</a>
+  </div>
   
-  <!-- SECTION 1: PYTHON -->
-  <div id="python" style="margin-top: 2rem;">
-    <h2 class="section-title">Python Scripting & Automation</h2>
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-icon">🐍</div>
-        <h3>Python Basics</h3>
-        <p>Master the fundamentals. Variables, loops, functions, and object-oriented programming explained from scratch.</p>
-        <a href="python.html" class="btn">Read Manual</a>
-      </div>
-      <div class="card">
-        <div class="card-icon">🤖</div>
-        <h3>Automation Scripts</h3>
-        <p>Stop doing repetitive tasks. Write scripts to automate file management, web scraping, and API requests.</p>
-        <a href="#" class="btn" onclick="alert('Coming soon!')">View Scripts</a>
-      </div>
-      <div class="card">
-        <div class="card-icon">🌐</div>
-        <h3>Web Scraping</h3>
-        <p>Extract data from the web using BeautifulSoup, Scrapy, and Selenium. Learn to parse HTML and JSON.</p>
-        <a href="#" class="btn" onclick="alert('Coming soon!')">Learn Scraping</a>
-      </div>
-    </div>
+  <div class="module-card">
+    <div class="module-icon">⚙️</div>
+    <h3>Task Automation</h3>
+    <p>Stop doing repetitive tasks. Build scripts that scrape the web, sort files, and manage APIs while you sleep.</p>
+    <a href="#" class="btn-link">View Scripts →</a>
   </div>
 
-  <!-- SECTION 2: CYBERSECURITY -->
-  <div id="security" style="margin-top: 4rem;">
-    <h2 class="section-title" style="color: var(--secondary);">Cyber Security & Ethical Hacking</h2>
-    <div class="grid-3">
-      <div class="card card-danger">
-        <div class="card-icon">🛡️</div>
-        <h3>Network Defense</h3>
-        <p>Understand how firewalls, VPNs, and intrusion detection systems work to protect data in transit.</p>
-        <a href="#" class="btn" onclick="alert('Coming soon!')">Explore Defense</a>
-      </div>
-      <div class="card card-danger">
-        <div class="card-icon">💀</div>
-        <h3>Penetration Testing</h3>
-        <p>Learn ethical hacking techniques. Reconnaissance, vulnerability scanning, and exploitation.</p>
-        <a href="#" class="btn" onclick="alert('Coming soon!')">Start Hacking</a>
-      </div>
-      <div class="card card-danger">
-        <div class="card-icon">🔐</div>
-        <h3>Cryptography</h3>
-        <p>The math behind security. Symmetric vs asymmetric encryption, hashing, and digital signatures.</p>
-        <a href="#" class="btn" onclick="alert('Coming soon!')">Learn Crypto</a>
-      </div>
-    </div>
+  <!-- Cyber Security -->
+  <div class="module-card cyber">
+    <div class="module-icon">🛡️</div>
+    <h3>Network Defense</h3>
+    <p>Understand firewalls, VPNs, and intrusion detection. Learn how to protect infrastructure from modern threats.</p>
+    <a href="#" class="btn-link">Deploy Defense →</a>
   </div>
 
-  <!-- SECTION 3: FEATURED BOOK (Python Book) -->
-  <div class="featured-book">
-    <div class="book-cover">
-      <h4>The Seven<br>Python<br>Book</h4>
-      <span>7th Edition</span>
-    </div>
-    <div class="featured-info">
-      <h2>Master Python from Zero to Hero.</h2>
-      <p>A complete, 26-chapter tutorial manual designed for beginners and intermediate programmers. Covering everything from variables to object-oriented programming, file I/O, and building real projects.</p>
-      <a href="python.html" class="btn-large">Read The Manual →</a>
-    </div>
+  <div class="module-card cyber">
+    <div class="module-icon">💀</div>
+    <h3>Offensive Security</h3>
+    <p>Ethical hacking, penetration testing, and vulnerability assessments. Think like an attacker to build better defenses.</p>
+    <a href="#" class="btn-link">Start Recon →</a>
   </div>
 
+  <div class="module-card">
+    <div class="module-icon">🔐</div>
+    <h3>Cryptography</h3>
+    <p>Symmetric and asymmetric encryption, hashing algorithms, and secure key management. The math behind security.</p>
+    <a href="#" class="btn-link">Learn Crypto →</a>
+  </div>
+
+  <div class="module-card">
+    <div class="module-icon">🌐</div>
+    <h3>OSINT & Recon</h3>
+    <p>Open Source Intelligence. Gather and analyze publicly available information to map out digital footprints.</p>
+    <a href="#" class="btn-link">Begin Search →</a>
+  </div>
+</div>
+
+<!-- FEATURED BOOK (DOSSIER STYLE) -->
+<div class="section-header" id="manual">
+  <h2>Official Documentation</h2>
+  <span style="font-size: 0.9rem;">[ CLASSIFIED ]</span>
+</div>
+
+<div class="dossier-section">
+  <div class="dossier">
+    <div class="dossier-left">
+      <h3>THE SEVEN<br>PYTHON<br>BOOK</h3>
+      <div class="version">v7.0</div>
+    </div>
+    <div class="dossier-right">
+      <h2>Master the Language.</h2>
+      <p>A complete, 26-chapter manual designed for absolute beginners to intermediate programmers. From variables and loops to OOP, file I/O, and real-world projects. No fluff. Just code.</p>
+      <a href="python.html" class="btn btn-primary" style="align-self: flex-start;">Open Manual</a>
+    </div>
+  </div>
 </div>
 
 <!-- FOOTER -->
 <footer>
-  <div class="logo">seven</div>
-  <div class="footer-links">
-    <a href="#">GitHub</a>
-    <a href="#">Twitter/X</a>
-    <a href="#">Discord</a>
+  <div class="logo">
+    <div class="logo-box">7</div>
+    SEVEN.
   </div>
-  <p>&copy; 2026 Seven Security Hub. All systems operational.</p>
+  <p>&copy; 2026 Seven Engineering Hub. All systems operational.</p>
 </footer>
 
 <script>
-  /* Simple Typing Effect for the Hero Header */
-  const text = "Building the Future with Code & Security.";
-  const titleEl = document.getElementById('hero-title');
-  titleEl.innerHTML = ""; // Clear existing
-  
-  let i = 0;
-  function typeWriter() {
-    if (i < text.length) {
-      // Handle the highlight span properly
-      let char = text.charAt(i);
-      if (char === 'F' && i === 15) {
-          titleEl.innerHTML += '<span class="highlight">';
-      }
-      if (char === 'e' && i === 24) {
-          titleEl.innerHTML += '</span>';
-      }
-      
-      titleEl.innerHTML += char;
-      i++;
-      setTimeout(typeWriter, 50); // speed
-    }
-  }
-  
-  // Start typing after a slight delay
-  setTimeout(typeWriter, 500);
+  // Simple script to pause marquee on hover
+  const marquee = document.querySelector('.marquee-content');
+  marquee.addEventListener('mouseenter', () => {
+    marquee.style.animationPlayState = 'paused';
+  });
+  marquee.addEventListener('mouseleave', () => {
+    marquee.style.animationPlayState = 'running';
+  });
 </script>
 
 </body>
