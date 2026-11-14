@@ -11,6 +11,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
+<!-- Pyodide Script (Python in Browser) -->
+<script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+
 <style>
   :root {
     --bg: #F4F4F0;
@@ -89,14 +92,13 @@
   .module-card.cyber .btn-link { border-bottom-color: var(--accent-blue); color: var(--accent-blue); }
   .module-card.cyber .btn-link:hover { color: #fff; border-color: #fff; }
 
-  /* ---------- CYBER TOOLKIT (NEW) ---------- */
+  /* ---------- CYBER TOOLKIT ---------- */
   .toolkit-grid { max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
   .tool-card { border: var(--border); background: #fff; box-shadow: var(--shadow); display: flex; flex-direction: column; }
   .tool-header { background: var(--ink); color: var(--bg); padding: 1rem; border-bottom: var(--border); display: flex; justify-content: space-between; align-items: center; }
   .tool-header h3 { font-family: var(--font-display); font-size: 1.2rem; }
   .tool-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; flex-grow: 1; }
   
-  /* Tool Inputs */
   .tool-input { width: 100%; padding: 0.8rem; border: var(--border); font-family: var(--font-mono); font-size: 0.9rem; outline: none; background: var(--bg); transition: background 0.2s; }
   .tool-input:focus { background: #fff; border-color: var(--accent-blue); }
   textarea.tool-input { resize: vertical; min-height: 80px; }
@@ -109,9 +111,35 @@
   .copy-icon { padding: 0 1rem; background: var(--bg); border: var(--border); cursor: pointer; font-weight: bold; }
   .copy-icon:hover { background: var(--accent); color: #fff; }
 
-  /* Checkbox row */
   .check-row { display: flex; gap: 1rem; align-items: center; font-size: 0.85rem; font-weight: 600; }
   .check-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
+
+  /* ---------- PYTHON TERMINAL (NEW) ---------- */
+  .terminal-section { max-width: 1000px; margin: 0 auto 4rem; padding: 0 2rem; }
+  .terminal-window {
+    border: var(--border-thick); background: var(--ink); color: #00ffcc;
+    box-shadow: 8px 8px 0 var(--accent); overflow: hidden;
+    font-family: var(--font-mono);
+  }
+  .term-header {
+    background: #1a1a1a; border-bottom: var(--border); padding: 0.8rem 1rem;
+    display: flex; justify-content: space-between; align-items: center; color: #fff;
+  }
+  .term-header h3 { font-family: var(--font-display); font-size: 1rem; color: var(--accent); }
+  .term-status { font-size: 0.8rem; background: #333; padding: 2px 8px; border-radius: 4px; }
+  .term-body { padding: 1.5rem; height: 300px; overflow-y: auto; font-size: 0.95rem; line-height: 1.5; }
+  .term-line { margin-bottom: 0.5rem; white-space: pre-wrap; word-break: break-word; }
+  .term-prompt { color: #fff; margin-right: 8px; }
+  .term-input-row {
+    display: flex; background: #1a1a1a; border-top: 1px solid #333;
+    padding: 0.8rem 1rem; align-items: center;
+  }
+  .term-input-row span { color: #fff; margin-right: 10px; font-weight: bold; }
+  .term-input-row input {
+    flex-grow: 1; background: transparent; border: none; outline: none;
+    color: #00ffcc; font-family: var(--font-mono); font-size: 0.95rem;
+  }
+  .term-error { color: #ff5555; }
 
   /* ---------- FEATURED BOOK ---------- */
   .dossier-section { max-width: 1200px; margin: 4rem auto; padding: 0 2rem; }
@@ -133,8 +161,7 @@
     .hero { grid-template-columns: 1fr; text-align: center; padding-top: 4rem; }
     .hero-text p { margin: 0 auto 2rem auto; }
     .hero-visual { display: none; }
-    .modules-grid { grid-template-columns: 1fr; }
-    .toolkit-grid { grid-template-columns: 1fr; }
+    .modules-grid, .toolkit-grid { grid-template-columns: 1fr; }
     .dossier { flex-direction: column; box-shadow: 8px 8px 0 var(--ink); }
     .dossier-left { width: 100%; border-right: none; border-bottom: 4px solid var(--ink); padding: 2rem; }
     .dossier-right { padding: 2rem; text-align: center; }
@@ -163,7 +190,8 @@
     </a>
     <div class="nav-links">
       <a href="#modules">Modules</a>
-      <a href="#toolkit" style="color: var(--accent);">Toolkit</a>
+      <a href="#toolkit">Toolkit</a>
+      <a href="#terminal" style="color: var(--accent);">Terminal</a>
       <a href="#manual">Manual</a>
     </div>
   </div>
@@ -174,7 +202,7 @@
   <div class="hero-text">
     <h1>ENGINEER THE <span>FUTURE</span></h1>
     <p>A highly specialized hub for Python scripting, system automation, and offensive/defensive cybersecurity engineering.</p>
-    <a href="#toolkit" class="btn btn-primary">Try Toolkit</a>
+    <a href="#terminal" class="btn btn-primary">Launch Terminal</a>
     <a href="python.html" class="btn">Read Manual</a>
   </div>
   
@@ -252,13 +280,9 @@
 </div>
 
 <div class="toolkit-grid">
-  
   <!-- Tool 1: Password Generator -->
   <div class="tool-card">
-    <div class="tool-header">
-      <h3>// PASSWORD_GEN</h3>
-      <span>🔑</span>
-    </div>
+    <div class="tool-header"><h3>// PASSWORD_GEN</h3><span>🔑</span></div>
     <div class="tool-body">
       <p style="font-size: 0.85rem; color: #555;">Generate strong, random passwords.</p>
       <div class="tool-output">
@@ -277,10 +301,7 @@
 
   <!-- Tool 2: Base64 -->
   <div class="tool-card">
-    <div class="tool-header">
-      <h3>// BASE64_ENC</h3>
-      <span>🔄</span>
-    </div>
+    <div class="tool-header"><h3>// BASE64_ENC</h3><span>🔄</span></div>
     <div class="tool-body">
       <p style="font-size: 0.85rem; color: #555;">Encode or decode text to Base64 format.</p>
       <textarea id="b64Input" class="tool-input" placeholder="Enter text or Base64 here..."></textarea>
@@ -297,10 +318,7 @@
 
   <!-- Tool 3: SHA-256 Hash -->
   <div class="tool-card">
-    <div class="tool-header">
-      <h3>// SHA256_HASH</h3>
-      <span>#️⃣</span>
-    </div>
+    <div class="tool-header"><h3>// SHA256_HASH</h3><span>#️⃣</span></div>
     <div class="tool-body">
       <p style="font-size: 0.85rem; color: #555;">Generate cryptographic hash (one-way).</p>
       <input type="text" id="hashInput" class="tool-input" placeholder="Enter text to hash..." oninput="generateHash()">
@@ -310,7 +328,29 @@
       </div>
     </div>
   </div>
+</div>
 
+<!-- NEW: INTERACTIVE PYTHON TERMINAL -->
+<div class="section-header" id="terminal">
+  <h2>Python Terminal</h2>
+  <span style="font-size: 0.9rem;">[ LIVE ENGINE ]</span>
+</div>
+
+<div class="terminal-section">
+  <div class="terminal-window">
+    <div class="term-header">
+      <h3>root@seven:~# python3</h3>
+      <span class="term-status" id="pyStatus">Initializing...</span>
+    </div>
+    <div class="term-body" id="termBody">
+      <div class="term-line" style="color: #888;">Python 3.12.0 (WebAssembly) [Pyodide]</div>
+      <div class="term-line" style="color: #888;">Type Python code and press Enter. Try: <code style="color:#fff;">print("Hello, Seven!")</code></div>
+    </div>
+    <div class="term-input-row">
+      <span>&gt;&gt;&gt;</span>
+      <input type="text" id="termInput" placeholder="print('Hello, World!')" autocomplete="off" disabled>
+    </div>
+  </div>
 </div>
 
 <!-- FEATURED BOOK (DOSSIER STYLE) -->
@@ -335,15 +375,12 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="logo">
-    <div class="logo-box">7</div>
-    SEVEN.
-  </div>
+  <div class="logo"><div class="logo-box">7</div>SEVEN.</div>
   <p>&copy; 2026 Seven Engineering Hub. All systems operational.</p>
 </footer>
 
 <script>
-  // Marquee pause on hover
+  /* ---------- MARQUEE ---------- */
   const marquee = document.querySelector('.marquee-content');
   marquee.addEventListener('mouseenter', () => { marquee.style.animationPlayState = 'paused'; });
   marquee.addEventListener('mouseleave', () => { marquee.style.animationPlayState = 'running'; });
@@ -352,34 +389,28 @@
   function generatePassword() {
     const length = document.getElementById('passLength').value;
     const includeSymbols = document.getElementById('passSymbols').checked;
-    
     let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     if (includeSymbols) chars += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
-    
     let password = "";
     for (let i = 0; i < length; i++) {
       password += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    
     document.getElementById('passOutput').value = password;
   }
 
-  /* ---------- TOOL 2: BASE64 ENCODER/DECODER ---------- */
+  /* ---------- TOOL 2: BASE64 ---------- */
   function b64Encode() {
     try {
       const input = document.getElementById('b64Input').value;
-      const encoded = btoa(input);
-      document.getElementById('b64Output').value = encoded;
+      document.getElementById('b64Output').value = btoa(input);
     } catch (e) {
       document.getElementById('b64Output').value = "Error: Invalid Input";
     }
   }
-
   function b64Decode() {
     try {
       const input = document.getElementById('b64Input').value;
-      const decoded = atob(input);
-      document.getElementById('b64Output').value = decoded;
+      document.getElementById('b64Output').value = atob(input);
     } catch (e) {
       document.getElementById('b64Output').value = "Error: Invalid Base64";
     }
@@ -389,33 +420,106 @@
   async function generateHash() {
     const input = document.getElementById('hashInput').value;
     const output = document.getElementById('hashOutput');
-    
-    if (!input) {
-      output.value = "";
-      return;
-    }
-
-    // Use Web Crypto API
+    if (!input) { output.value = ""; return; }
     const msgBuffer = new TextEncoder().encode(input);
     const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    
-    output.value = hashHex;
+    output.value = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
-  /* ---------- COPY TO CLIPBOARD (GENERIC) ---------- */
+  /* ---------- COPY CLIPBOARD ---------- */
   function copyToolText(elementId) {
     const text = document.getElementById(elementId).value;
     if (!text) return;
-    
     navigator.clipboard.writeText(text).then(() => {
-      // Optional: Change icon temporarily to show success
       const btn = document.querySelector(`button[onclick="copyToolText('${elementId}')"]`);
       const original = btn.innerHTML;
       btn.innerHTML = '✅';
       setTimeout(() => { btn.innerHTML = original; }, 1500);
     });
+  }
+
+  /* =========================================
+     PYTHON TERMINAL LOGIC (PYODIDE)
+     ========================================= */
+  const termBody = document.getElementById('termBody');
+  const termInput = document.getElementById('termInput');
+  const pyStatus = document.getElementById('pyStatus');
+  let pyodideReady = false;
+
+  // Asynchronously load Pyodide
+  async function initPyodide() {
+    try {
+      const pyodide = await loadPyodide({
+        stdout: (text) => appendTermLine(text, '#00ffcc'),
+        stderr: (text) => appendTermLine(text, '#ff5555')
+      });
+      window.pyodide = pyodide;
+      pyodideReady = true;
+      pyStatus.textContent = 'Online';
+      pyStatus.style.background = '#005500';
+      pyStatus.style.color = '#00ffcc';
+      termInput.disabled = false;
+      appendTermLine("Python environment loaded successfully.", "#888");
+    } catch (e) {
+      pyStatus.textContent = 'Error';
+      appendTermLine("Failed to load Python environment.", '#ff5555');
+    }
+  }
+
+  // Start loading Pyodide immediately
+  initPyodide();
+
+  // Helper to append text to the terminal
+  function appendTermLine(text, color = '#00ffcc') {
+    const div = document.createElement('div');
+    div.className = 'term-line';
+    div.style.color = color;
+    div.textContent = text;
+    termBody.appendChild(div);
+    termBody.scrollTop = termBody.scrollHeight;
+  }
+
+  // Handle Enter key in terminal
+  termInput.addEventListener('keydown', async (e) => {
+    if (e.key === 'Enter') {
+      const code = termInput.value;
+      if (!code.trim()) return;
+
+      // Echo the command
+      const echoDiv = document.createElement('div');
+      echoDiv.className = 'term-line';
+      echoDiv.innerHTML = `<span class="term-prompt">&gt;&gt;&gt;</span><span style="color: #fff;">${escapeHTML(code)}</span>`;
+      termBody.appendChild(echoDiv);
+      
+      // Clear input
+      termInput.value = '';
+      termBody.scrollTop = termBody.scrollHeight;
+
+      if (pyodideReady) {
+        try {
+          // Run Python code
+          await window.pyodide.runPythonAsync(code);
+        } catch (err) {
+          appendTermLine(err.message, '#ff5555');
+        }
+      } else {
+        appendTermLine("Python is still loading. Please wait.", '#ff5555');
+      }
+    }
+  });
+
+  // Helper to prevent HTML injection in terminal echo
+  function escapeHTML(str) {
+    return str.replace(/[&<>'"]/g, 
+      tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[tag] || tag)
+    );
   }
 </script>
 
