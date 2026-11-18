@@ -4,16 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SEVEN — Core Modules</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFFFF' stroke='%230F0F0F' stroke-width='8'/><text y='.85em' x='25' font-size='90' font-weight='bold' fill='%230F0F0F'>7</text></svg>">
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-V44V2E8512"></script>
+<!-- Google Tag Manager / Analytics -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KNJSJC49"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-V44V2E8512');
 </script>
-  
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFFFF' stroke='%230F0F0F' stroke-width='6'/><text y='.85em' x='25' font-size='90' font-weight='bold' fill='%230F0F0F'>7</text></svg>">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -132,6 +131,36 @@
     text-transform: uppercase; letter-spacing: 1px;
   }
 
+  /* ---------- INTERACTIVE LABS ---------- */
+  .lab-box {
+    border: 4px solid var(--ink); background: #fff; box-shadow: 8px 8px 0 var(--accent);
+    padding: 2rem; margin: 2rem 0; font-family: var(--font-mono);
+  }
+  .lab-box h3 { font-family: var(--font-display); font-size: 1.4rem; color: var(--ink); margin-bottom: 0.5rem; border: none; }
+  .lab-box p { font-size: 0.9rem; color: #555; margin-bottom: 1.5rem; }
+  
+  .lab-input {
+    width: 100%; padding: 0.8rem; border: var(--border); font-family: var(--font-mono);
+    font-size: 0.95rem; margin-bottom: 1rem; outline: none;
+  }
+  .lab-input:focus { background: #f0f0f0; }
+  .lab-btn {
+    background: var(--ink); color: #fff; padding: 0.8rem 1.5rem;
+    border: none; font-family: var(--font-display); font-weight: 700; cursor: pointer;
+    text-transform: uppercase; transition: background 0.2s;
+  }
+  .lab-btn:hover { background: var(--accent); }
+  
+  .lab-result {
+    margin-top: 1rem; padding: 1rem; border: 2px dashed #ccc; background: #111;
+    color: #fff; font-size: 0.9rem; min-height: 50px; display: none;
+  }
+
+  .term-output {
+    background: #000; color: #00ffcc; padding: 1rem; border: 2px solid #333;
+    height: 150px; overflow-y: auto; font-size: 0.85rem; display: none; margin-top: 1rem;
+  }
+
   @media (max-width: 900px) {
     .layout { flex-direction: column; }
     .sidebar { width: 100%; display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; }
@@ -142,6 +171,14 @@
 </style>
 </head>
 <body>
+
+<!-- CTF HIDDEN FLAG -->
+<!-- 
+  =========================================
+  CONGRATULATIONS! You found the hidden flag.
+  FLAG: SEVEN_L33T_H4CK3R
+  =========================================
+-->
 
 <header>
   <div class="nav-inner">
@@ -183,7 +220,6 @@
 import shutil
 
 def organize_folder(folder_path):
-    # Define file types and their target folders
     extensions = {
         'Images': ['.jpg', '.jpeg', '.png', '.gif', '.bmp'],
         'Documents': ['.pdf', '.docx', '.txt', '.xlsx'],
@@ -191,68 +227,23 @@ def organize_folder(folder_path):
         'Archives': ['.zip', '.rar', '.7z']
     }
 
-    # Loop through all files in the directory
     for filename in os.listdir(folder_path):
         file_path = os.path.join(folder_path, filename)
-        
-        # Skip if it's a folder
-        if os.path.isdir(file_path):
-            continue
+        if os.path.isdir(file_path): continue
 
-        # Get file extension
         _, ext = os.path.splitext(filename)
         ext = ext.lower()
 
-        # Find which folder it belongs to
-        moved = False
         for folder_name, ext_list in extensions.items():
             if ext in ext_list:
                 target_dir = os.path.join(folder_path, folder_name)
-                
-                # Create folder if it doesn't exist
-                if not os.path.exists(target_dir):
-                    os.makedirs(target_dir)
-                
-                # Move the file
+                if not os.path.exists(target_dir): os.makedirs(target_dir)
                 shutil.move(file_path, os.path.join(target_dir, filename))
                 print(f"Moved: {filename} -> {folder_name}/")
-                moved = True
                 break
-        
-        if not moved:
-            print(f"Skipped: {filename} (Unknown type)")
 
 # Usage:
-# organize_folder("/path/to/your/messy/folder")
-</code></pre>
-      </div>
-
-      <h2>2. Web Scraping (Fetching Data)</h2>
-      <p>Using <code>requests</code> and <code>BeautifulSoup</code> to extract data from a website. (Requires: <code>pip install requests beautifulsoup4</code>)</p>
-
-      <div class="code-box">
-        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-        <pre><code>import requests
-from bs4 import BeautifulSoup
-
-def get_headlines(url):
-    # Fetch the webpage
-    response = requests.get(url)
-    
-    # Check if successful
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # Find all &lt;h2&gt; tags (change this based on the site)
-        headlines = soup.find_all('h2')
-        
-        for i, headline in enumerate(headlines, 1):
-            print(f"{i}. {headline.text.strip()}")
-    else:
-        print("Failed to fetch page.")
-
-# Usage:
-# get_headlines("https://news.ycombinator.com/")
+# organize_folder("/path/to/messy/folder")
 </code></pre>
       </div>
     </div>
@@ -272,45 +263,27 @@ def get_headlines(url):
       <div class="code-box">
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
         <pre><code>import socket
-import sys
 
 def scan_ports(target, ports):
     print(f"Scanning Target: {target}")
-    
     for port in ports:
-        # Create a socket object
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        
-        # Set a timeout (don't wait forever)
         s.settimeout(1.0)
-        
-        # Attempt connection
         result = s.connect_ex((target, port))
-        
         if result == 0:
             print(f"[+] Port {port} is OPEN")
         else:
             print(f"[-] Port {port} is CLOSED")
-        
         s.close()
 
-# Usage: Scanning common ports on localhost
+# Usage:
 # scan_ports("127.0.0.1", [21, 22, 80, 443, 3306])
 </code></pre>
-      </div>
-
-      <div class="alert-box">
-        <h4>// HOW FIREWALLS WORK</h4>
-        <p>A firewall acts as a barrier between a trusted network (your internal system) and an untrusted network (the internet). It examines incoming and outgoing traffic based on predefined security rules.</p>
-        <ul>
-          <li><strong>Allow Rules:</strong> Traffic that is permitted (e.g., Port 80 for web).</li>
-          <li><strong>Deny Rules:</strong> Traffic that is blocked (e.g., Blocking SSH on public IPs).</li>
-        </ul>
       </div>
     </div>
 
     <!-- ==========================================
-         MODULE 3: OFFENSIVE SECURITY
+         MODULE 3: OFFENSIVE SECURITY (HACKING LABS)
          ========================================== -->
     <div id="offensive" class="module-section">
       <div class="module-header">
@@ -320,66 +293,41 @@ def scan_ports(target, ports):
 
       <div class="alert-box danger">
         <h4>⚠️ ETHICAL DISCLAIMER</h4>
-        <p>The techniques and code shown here are strictly for <strong>educational purposes</strong> and authorized penetration testing. Never test these on systems you do not own or have explicit permission to test. Unauthorized hacking is illegal.</p>
+        <p>The techniques and simulations shown here are strictly for <strong>educational purposes</strong>. Never test these on systems you do not own or have explicit permission to test. Unauthorized hacking is illegal.</p>
       </div>
 
-      <h2>1. HTTP Header Grabber</h2>
-      <p>Gathering HTTP headers is part of reconnaissance. It can reveal what server software is running, which can help attackers (or defenders) identify potential vulnerabilities.</p>
-
-      <div class="code-box">
-        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-        <pre><code>import requests
-
-def get_headers(url):
-    try:
-        response = requests.get(url, timeout=5)
-        print(f"Headers for {url}:\n")
-        
-        for header, value in response.headers.items():
-            print(f"{header}: {value}")
-            
-    except Exception as e:
-        print(f"Error: {e}")
-
-# Usage:
-# get_headers("https://example.com")
-</code></pre>
-      </div>
-
-      <h2>2. Basic Brute-Force Logic (Simulation)</h2>
-      <p>Understanding how brute-force attacks work is crucial for defense. This is a simulated loop (it does not actually connect to a server).</p>
+      <h2>Interactive Lab 1: SQL Injection Simulation</h2>
+      <p>SQL Injection happens when a website fails to validate user input, allowing attackers to run database commands. Try to bypass this login form using a classic SQL payload.</p>
+      <p><em>Hint: Try typing <code>' OR 1=1 --</code> as the username.</em></p>
       
-      <div class="code-box">
-        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-        <pre><code>import string
-import time
-
-def simulate_bruteforce(target_password, max_length=3):
-    chars = string.ascii_lowercase
-    attempts = 0
-    start_time = time.time()
-    
-    print("Starting simulation...")
-    
-    # This generates combinations (AAA, AAB, AAC, etc.)
-    for length in range(1, max_length + 1):
-        for combination in itertools.product(chars, repeat=length):
-            attempt = ''.join(combination)
-            attempts += 1
-            
-            if attempt == target_password:
-                end_time = time.time()
-                print(f"Password found: {attempt}")
-                print(f"Attempts: {attempts}")
-                print(f"Time: {end_time - start_time:.2f} seconds")
-                return
-    
-    print("Password not found.")
-
-# Usage:
-# simulate_bruteforce("abc")
-</code></pre>
+      <div class="lab-box">
+        <h3>// TARGET: VULNERABLE_LOGIN</h3>
+        <input type="text" id="sqliUser" class="lab-input" placeholder="Username (e.g. admin)">
+        <input type="password" id="sqliPass" class="lab-input" placeholder="Password">
+        <button class="lab-btn" onclick="trySqli()">Execute Login</button>
+        
+        <div id="sqliResult" class="lab-result"></div>
       </div>
+
+      <h2>Interactive Lab 2: Brute Force Simulator</h2>
+      <p>Brute forcing is the act of trying every possible combination until the correct one is found. Start the attack and watch the terminal try to guess the 4-digit PIN.</p>
+      
+      <div class="lab-box">
+        <h3>// TARGET: PIN_CRACKER</h3>
+        <button class="lab-btn" onclick="startBruteForce()" id="bruteBtn">Initiate Attack</button>
+        <div id="bruteOutput" class="term-output"></div>
+      </div>
+
+      <h2>Interactive Lab 3: Capture The Flag (CTF)</h2>
+      <p>In cybersecurity, a "Flag" is a hidden string of text placed inside a system to prove you've compromised it. Check the <strong>Source Code</strong> (Right-click -> View Page Source) or press <strong>F12</strong> and look through the HTML. Find the hidden flag and submit it below.</p>
+      
+      <div class="lab-box">
+        <h3>// CHALLENGE: FIND_THE_FLAG</h3>
+        <input type="text" id="flagInput" class="lab-input" placeholder="FLAG{...}">
+        <button class="lab-btn" onclick="checkFlag()">Submit Flag</button>
+        <div id="flagResult" class="lab-result"></div>
+      </div>
+
     </div>
 
     <!-- ==========================================
@@ -392,57 +340,19 @@ def simulate_bruteforce(target_password, max_length=3):
       </div>
 
       <h2>1. Hashing Passwords (SHA-256)</h2>
-      <p>Never store passwords in plaintext. Hashing is a one-way function. You can turn a password into a hash, but you cannot turn the hash back into the password.</p>
+      <p>Never store passwords in plaintext. Hashing is a one-way function.</p>
 
       <div class="code-box">
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
         <pre><code>import hashlib
 
 def hash_password(password):
-    # Encode the password to bytes
     encoded_pw = password.encode('utf-8')
-    
-    # Create a SHA-256 hash object
     hash_obj = hashlib.sha256(encoded_pw)
-    
-    # Get the hexadecimal representation
-    hex_digest = hash_obj.hexdigest()
-    return hex_digest
+    return hash_obj.hexdigest()
 
 # Usage:
 # print(hash_password("mySuperSecretPassword123"))
-# Output: a03b8... (always 64 characters long)
-</code></pre>
-      </div>
-
-      <h2>2. Symmetric Encryption (Fernet)</h2>
-      <p>Symmetric means the same key is used to lock and unlock the data. (Requires: <code>pip install cryptography</code>)</p>
-
-      <div class="code-box">
-        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-        <pre><code>from cryptography.fernet import Fernet
-
-# 1. Generate a key (Do this once and SAVE IT securely!)
-# key = Fernet.generate_key()
-# print(key)
-
-# 2. Use the key to encrypt/decrypt
-key = b'YOUR_SAVED_KEY_HERE'
-cipher = Fernet(key)
-
-def encrypt_message(message):
-    encoded_msg = message.encode()
-    encrypted = cipher.encrypt(encoded_msg)
-    return encrypted
-
-def decrypt_message(encrypted_msg):
-    decrypted = cipher.decrypt(encrypted_msg)
-    return decrypted.decode()
-
-# Usage:
-# encrypted = encrypt_message("Secret plans")
-# print("Encrypted:", encrypted)
-# print("Decrypted:", decrypt_message(encrypted))
 </code></pre>
       </div>
     </div>
@@ -464,9 +374,7 @@ def decrypt_message(encrypted_msg):
         <pre><code>import requests
 
 def ip_lookup(ip_address):
-    # Free API endpoint
     url = f"http://ip-api.com/json/{ip_address}"
-    
     try:
         response = requests.get(url)
         data = response.json()
@@ -476,41 +384,11 @@ def ip_lookup(ip_address):
             print(f"Country: {data['country']}")
             print(f"City: {data['city']}")
             print(f"ISP: {data['isp']}")
-            print(f"Lat/Lon: {data['lat']}, {data['lon']}")
-        else:
-            print("IP not found or invalid.")
-            
     except Exception as e:
         print(f"Error: {e}")
 
 # Usage:
-# ip_lookup("8.8.8.8") # Google's Public DNS
-</code></pre>
-      </div>
-
-      <h2>2. Domain WHOIS Lookup</h2>
-      <p>Find out who registered a domain, when it was created, and when it expires. (Requires: <code>pip install python-whois</code>)</p>
-
-      <div class="code-box">
-        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-        <pre><code>import whois
-
-def get_domain_info(domain):
-    try:
-        w = whois.whois(domain)
-        
-        print(f"--- WHOIS for {domain} ---")
-        print(f"Registrar: {w.registrar}")
-        print(f"Creation Date: {w.creation_date}")
-        print(f"Expiration Date: {w.expiration_date}")
-        print(f"Name Servers: {w.name_servers}")
-        print(f"Emails: {w.emails}")
-        
-    except Exception as e:
-        print(f"Error: {e}")
-
-# Usage:
-# get_domain_info("github.com")
+# ip_lookup("8.8.8.8")
 </code></pre>
       </div>
     </div>
@@ -521,51 +399,103 @@ def get_domain_info(domain):
 <script>
   // Function to switch between modules
   function showModule(moduleId, btn) {
-    // 1. Hide all sections
-    const sections = document.querySelectorAll('.module-section');
-    sections.forEach(sec => sec.classList.remove('active'));
-    
-    // 2. Remove active class from all buttons
-    const navBtns = document.querySelectorAll('.nav-btn');
-    navBtns.forEach(b => b.classList.remove('active'));
-    
-    // 3. Show the target section and set button to active
+    document.querySelectorAll('.module-section').forEach(sec => sec.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(moduleId).classList.add('active');
     btn.classList.add('active');
-    
-    // 4. Scroll to top of content area smoothly
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Function to copy code
   function copyCode(btn) {
-    const wrapper = btn.closest('.code-box');
-    const codeElement = wrapper.querySelector('pre code');
-    const textToCopy = codeElement.innerText;
-
-    navigator.clipboard.writeText(textToCopy).then(() => {
-      const originalText = btn.innerText;
+    const code = btn.closest('.code-box').querySelector('pre code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
       btn.innerText = 'Copied!';
       btn.classList.add('copied');
-
-      setTimeout(() => {
-        btn.innerText = originalText;
-        btn.classList.remove('copied');
-      }, 2000);
-    }).catch(err => {
-      console.error('Failed to copy: ', err);
-      btn.innerText = 'Error';
+      setTimeout(() => { btn.innerText = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
   }
 
-  // Check URL hash on load to auto-open specific module (e.g., modules.html#crypto)
+  // ==========================================
+  // LAB 1: SQL INJECTION SIMULATOR
+  // ==========================================
+  function trySqli() {
+    const user = document.getElementById('sqliUser').value;
+    const pass = document.getElementById('sqliPass').value;
+    const result = document.getElementById('sqliResult');
+    
+    result.style.display = 'block';
+    
+    // Check for SQLi payloads
+    if (user.includes("' OR 1=1") || user.includes("' OR '1'='1") || pass.includes("' OR 1=1")) {
+      result.innerHTML = `
+        <span style="color:#00ffcc;">[+] QUERY: SELECT * FROM users WHERE username = '${user}' AND password = '${pass}'</span><br><br>
+        <span style="color:#00ffcc; font-weight:bold; font-size:1.1rem;">>> ACCESS GRANTED. Welcome, Administrator.</span>
+      `;
+    } else {
+      result.innerHTML = `
+        <span style="color:#ff5555;">[-] QUERY: SELECT * FROM users WHERE username = '${user}' AND password = '${pass}'</span><br><br>
+        <span style="color:#ff5555; font-weight:bold;">>> Access Denied. Invalid Credentials.</span>
+      `;
+    }
+  }
+
+  // ==========================================
+  // LAB 2: BRUTE FORCE SIMULATOR
+  // ==========================================
+  let bruteInterval;
+  const targetPin = "1337";
+
+  function startBruteForce() {
+    const output = document.getElementById('bruteOutput');
+    const btn = document.getElementById('bruteBtn');
+    
+    output.style.display = 'block';
+    output.innerHTML = "Initializing brute force attack...<br>";
+    btn.innerText = "Cracking...";
+    btn.disabled = true;
+    
+    let attempts = 0;
+    
+    if (bruteInterval) clearInterval(bruteInterval);
+    
+    bruteInterval = setInterval(() => {
+      let guess = Math.floor(1000 + Math.random() * 9000).toString();
+      attempts++;
+      
+      output.innerHTML += `[Attempt ${attempts}] Trying PIN: ${guess}<br>`;
+      output.scrollTop = output.scrollHeight;
+      
+      if (guess === targetPin) {
+        clearInterval(bruteInterval);
+        output.innerHTML += `<br><span style="color:#00ffcc; font-weight:bold;">[+] PIN CRACKED: ${guess} (Found in ${attempts} attempts)</span>`;
+        output.scrollTop = output.scrollHeight;
+        btn.innerText = "Attack Complete";
+      }
+    }, 50); // Speed of brute force
+  }
+
+  // ==========================================
+  // LAB 3: CAPTURE THE FLAG (CTF)
+  // ==========================================
+  function checkFlag() {
+    const flag = document.getElementById('flagInput').value;
+    const result = document.getElementById('flagResult');
+    result.style.display = 'block';
+    
+    if (flag === "SEVEN_L33T_H4CK3R") {
+      result.innerHTML = `<span style="color:#00ffcc; font-weight:bold;">[+] CORRECT FLAG! You are officially a SEVEN Hacker.</span>`;
+    } else {
+      result.innerHTML = `<span style="color:#ff5555;">[-] INCORRECT FLAG. Keep looking (Hint: Check the page source).</span>`;
+    }
+  }
+
+  // Check URL hash on load
   window.addEventListener('DOMContentLoaded', () => {
     const hash = window.location.hash.replace('#', '');
     if (hash) {
       const btn = document.querySelector(`.nav-btn[onclick*="${hash}"]`);
-      if (btn) {
-        showModule(hash, btn);
-      }
+      if (btn) showModule(hash, btn);
     }
   });
 </script>
