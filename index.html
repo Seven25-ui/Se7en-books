@@ -237,7 +237,7 @@
       SEVEN.
     </a>
 
-     <div class="nav-links">
+    <div class="nav-links">
       <a href="#modules">Modules</a>
       <a href="#toolkit">Toolkit</a>
       <a href="#terminal" style="color: var(--accent);">Terminal</a>
@@ -245,8 +245,8 @@
       <a href="blog.html">Writeups</a>  
       <a href="about.html">About</a>
     </div>
-    
-    </header>
+  </div>
+</header>
 
 <!-- HERO SECTION -->
 <section class="hero">
@@ -318,7 +318,7 @@
 <!-- MODULES SECTION -->
 <div class="section-header" id="modules">
   <h2>Core Modules</h2>
-  <span style="font-size: 0.9rem;">[ 01 - 06 ]</span>
+  <span style="font-size: 0.9rem;">[ 01 - 07 ]</span>
 </div>
 
 <div class="modules-grid">
@@ -363,14 +363,15 @@
     <p>Open Source Intelligence. Gather and analyze publicly available information to map out digital footprints.</p>
     <a href="modules.html#osint" class="btn-link">Begin Search →</a>
   </div>
-</div>
 
-   <div class="module-card cyber">
+  <!-- CTF Card (Gibalik sa sulod sa grid) -->
+  <div class="module-card cyber">
     <div class="module-icon">🚩</div>
     <h3>CTF Challenges</h3>
     <p>Test your skills with Capture The Flag challenges. Decode, inspect, and find hidden flags.</p>
     <a href="ctf.html" class="btn-link">Start Hacking →</a>
   </div> 
+</div>
 
 <!-- CYBER TOOLKIT SECTION -->
 <div class="section-header" id="toolkit">
@@ -428,7 +429,7 @@
     </div>
   </div>
 
-  <!-- NEW Tool 4: JWT Decoder -->
+  <!-- Tool 4: JWT Decoder -->
   <div class="tool-card">
     <div class="tool-header"><h3>// JWT_DECODER</h3><span>🎫</span></div>
     <div class="tool-body">
@@ -449,7 +450,7 @@
     </div>
   </div>
 
-  <!-- NEW Tool 5: Hash Checker (Dictionary) -->
+  <!-- Tool 5: Hash Checker (Dictionary) -->
   <div class="tool-card">
     <div class="tool-header"><h3>// HASH_CRACKER</h3><span>🔨</span></div>
     <div class="tool-body">
@@ -460,9 +461,8 @@
       <div id="crackResult" class="hash-result"></div>
     </div>
   </div>
-</div>
 
-  <!-- NEW Tool 6: URL Encoder -->
+  <!-- Tool 6: URL Encoder (Gibalik sa sulod sa grid) -->
   <div class="tool-card">
     <div class="tool-header"><h3>// URL_ENCODER</h3><span>🔗</span></div>
     <div class="tool-body">
@@ -477,7 +477,8 @@
         <button class="copy-icon" onclick="copyToolText('urlOutput')">📋</button>
       </div>
     </div>
-  </div>  
+  </div>
+</div>
 
 <!-- INTERACTIVE PYTHON TERMINAL -->
 <div class="section-header" id="terminal">
@@ -604,11 +605,9 @@
     }
 
     try {
-      // JWT has 3 parts: Header, Payload, Signature
       const parts = token.split('.');
       if (parts.length !== 3) throw new Error("Invalid JWT format");
 
-      // Helper function to decode Base64Url
       const base64UrlDecode = (str) => {
         str = str.replace(/-/g, '+').replace(/_/g, '/');
         return decodeURIComponent(atob(str).split('').map(function(c) {
@@ -631,15 +630,12 @@
   }
 
   /* ---------- TOOL 5: HASH CRACKER (DICTIONARY) ---------- */
-  // Small local dictionary of common MD5 and SHA-256 hashes
   const hashDictionary = {
-    // MD5
     "5f4dcc3b5aa765d61d8327deb882cf99": "password",
     "e10adc3949ba59abbe56e057f20f883e": "123456",
     "21232f297a57a5a743894a0e4a801fc3": "admin",
     "25d55ad283aa400af464c76d713c07ad": "12345678",
     "d8578edf8458ce06fbc5bb76a58c5ca4": "qwerty",
-    // SHA-256
     "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8": "password",
     "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92": "123456",
     "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918": "admin"
@@ -772,10 +768,8 @@
   /* =========================================
      LIVE SYSTEM DASHBOARD LOGIC
      ========================================= */
-  // 1. Live Clock (Cebu Time)
   function updateClock() {
     const now = new Date();
-    // Convert to Philippine Time (UTC+8)
     const phtTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
     
     const hours = String(phtTime.getHours()).padStart(2, '0');
@@ -784,12 +778,9 @@
     
     document.getElementById('liveTime').textContent = `${hours}:${minutes}:${seconds}`;
   }
-  
-  // Update every second
   setInterval(updateClock, 1000);
   updateClock();
 
-  // 2. Network Status & Ping (Fake Ping for visual)
   function checkNetwork() {
     const statusEl = document.getElementById('netStatus');
     const pingEl = document.getElementById('pingValue');
@@ -797,7 +788,6 @@
     if (navigator.onLine) {
       statusEl.textContent = 'ONLINE';
       statusEl.style.color = '#00aa55';
-      // Simulate a fast ping between 10ms - 50ms
       const fakePing = Math.floor(Math.random() * 40) + 10;
       pingEl.textContent = fakePing;
     } else {
@@ -806,18 +796,15 @@
       pingEl.textContent = '--';
     }
   }
-  
   window.addEventListener('online', checkNetwork);
   window.addEventListener('offline', checkNetwork);
-  setInterval(checkNetwork, 5000); // Check every 5 seconds
+  setInterval(checkNetwork, 5000);
   checkNetwork();
 
-  // 3. User Agent Fingerprint
   function detectUserAgent() {
     const ua = navigator.userAgent;
     document.getElementById('userAgentRaw').textContent = ua;
     
-    // Detect OS
     let os = "Unknown";
     if (ua.indexOf("Win") != -1) os = "Windows";
     if (ua.indexOf("Mac") != -1) os = "macOS";
@@ -826,7 +813,6 @@
     if (ua.indexOf("like Mac") != -1) os = "iOS";
     document.getElementById('userOS').textContent = os;
 
-    // Detect Browser
     let browser = "Unknown";
     if (ua.indexOf("Firefox") > -1) browser = "Firefox";
     else if (ua.indexOf("SamsungBrowser") > -1) browser = "Samsung Internet";
@@ -837,13 +823,11 @@
     else if (ua.indexOf("Safari") > -1) browser = "Safari";
     document.getElementById('userBrowser').textContent = browser;
 
-    // Detect Screen
     document.getElementById('userScreen').textContent = `${screen.width}x${screen.height}`;
   }
-  
   detectUserAgent();  
 
-    /* ---------- TOOL 6: URL ENCODER/DECODER ---------- */
+  /* ---------- TOOL 6: URL ENCODER/DECODER ---------- */
   function urlEncode() {
     try {
       const input = document.getElementById('urlInput').value;
