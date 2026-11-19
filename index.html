@@ -272,6 +272,47 @@
   </div>
 </section>
 
+<!-- LIVE SYSTEM DASHBOARD -->
+<div class="section-header" id="dashboard">
+  <h2>System Status</h2>
+  <span style="font-size: 0.9rem;">[ REALTIME ]</span>
+</div>
+
+<div class="toolkit-grid" style="max-width: 1200px; margin: 0 auto 4rem; padding: 0 2rem;">
+  <!-- Card 1: Time -->
+  <div class="tool-card">
+    <div class="tool-header"><h3>// LOCAL_TIME</h3><span>⏰</span></div>
+    <div class="tool-body" style="justify-content: center; align-items: center; text-align: center;">
+      <div id="liveTime" style="font-family: var(--font-display); font-size: 3rem; font-weight: 700; letter-spacing: -2px;">--:--:--</div>
+      <div style="font-size: 0.85rem; color: #555;">Cebu City, Philippines (PHT)</div>
+    </div>
+  </div>
+
+  <!-- Card 2: Network -->
+  <div class="tool-card">
+    <div class="tool-header"><h3>// NETWORK_STATUS</h3><span>🌐</span></div>
+    <div class="tool-body" style="justify-content: center; align-items: center; text-align: center;">
+      <div id="netStatus" style="font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: #555;">Checking...</div>
+      <div style="font-size: 0.85rem; color: #555;">Ping: <span id="pingValue">--</span> ms</div>
+    </div>
+  </div>
+
+  <!-- Card 3: Fingerprint -->
+  <div class="tool-card">
+    <div class="tool-header"><h3>// USER_AGENT</h3><span>💻</span></div>
+    <div class="tool-body">
+      <div style="font-size: 0.85rem; margin-bottom: 10px;">
+        <strong>OS:</strong> <span id="userOS">Detecting...</span><br>
+        <strong>Browser:</strong> <span id="userBrowser">Detecting...</span><br>
+        <strong>Screen:</strong> <span id="userScreen">Detecting...</span>
+      </div>
+      <div style="font-size: 0.75rem; background: #f4f4f0; padding: 8px; border: 1px dashed #ccc; word-break: break-all;">
+        <span id="userAgentRaw">...</span>
+      </div>
+    </div>
+  </div>
+</div>  
+
 <!-- MODULES SECTION -->
 <div class="section-header" id="modules">
   <h2>Core Modules</h2>
@@ -697,6 +738,80 @@
     `;
     termInput.focus();
   }
+
+  /* =========================================
+     LIVE SYSTEM DASHBOARD LOGIC
+     ========================================= */
+  // 1. Live Clock (Cebu Time)
+  function updateClock() {
+    const now = new Date();
+    // Convert to Philippine Time (UTC+8)
+    const phtTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+    
+    const hours = String(phtTime.getHours()).padStart(2, '0');
+    const minutes = String(phtTime.getMinutes()).padStart(2, '0');
+    const seconds = String(phtTime.getSeconds()).padStart(2, '0');
+    
+    document.getElementById('liveTime').textContent = `${hours}:${minutes}:${seconds}`;
+  }
+  
+  // Update every second
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // 2. Network Status & Ping (Fake Ping for visual)
+  function checkNetwork() {
+    const statusEl = document.getElementById('netStatus');
+    const pingEl = document.getElementById('pingValue');
+    
+    if (navigator.onLine) {
+      statusEl.textContent = 'ONLINE';
+      statusEl.style.color = '#00aa55';
+      // Simulate a fast ping between 10ms - 50ms
+      const fakePing = Math.floor(Math.random() * 40) + 10;
+      pingEl.textContent = fakePing;
+    } else {
+      statusEl.textContent = 'OFFLINE';
+      statusEl.style.color = '#ff5555';
+      pingEl.textContent = '--';
+    }
+  }
+  
+  window.addEventListener('online', checkNetwork);
+  window.addEventListener('offline', checkNetwork);
+  setInterval(checkNetwork, 5000); // Check every 5 seconds
+  checkNetwork();
+
+  // 3. User Agent Fingerprint
+  function detectUserAgent() {
+    const ua = navigator.userAgent;
+    document.getElementById('userAgentRaw').textContent = ua;
+    
+    // Detect OS
+    let os = "Unknown";
+    if (ua.indexOf("Win") != -1) os = "Windows";
+    if (ua.indexOf("Mac") != -1) os = "macOS";
+    if (ua.indexOf("Linux") != -1) os = "Linux";
+    if (ua.indexOf("Android") != -1) os = "Android";
+    if (ua.indexOf("like Mac") != -1) os = "iOS";
+    document.getElementById('userOS').textContent = os;
+
+    // Detect Browser
+    let browser = "Unknown";
+    if (ua.indexOf("Firefox") > -1) browser = "Firefox";
+    else if (ua.indexOf("SamsungBrowser") > -1) browser = "Samsung Internet";
+    else if (ua.indexOf("Opera") > -1 || ua.indexOf("OPR") > -1) browser = "Opera";
+    else if (ua.indexOf("Trident") > -1) browser = "Internet Explorer";
+    else if (ua.indexOf("Edge") > -1) browser = "Edge";
+    else if (ua.indexOf("Chrome") > -1) browser = "Chrome";
+    else if (ua.indexOf("Safari") > -1) browser = "Safari";
+    document.getElementById('userBrowser').textContent = browser;
+
+    // Detect Screen
+    document.getElementById('userScreen').textContent = `${screen.width}x${screen.height}`;
+  }
+  
+  detectUserAgent();  
 
 </script>
 
