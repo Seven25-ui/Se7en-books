@@ -462,6 +462,23 @@
   </div>
 </div>
 
+  <!-- NEW Tool 6: URL Encoder -->
+  <div class="tool-card">
+    <div class="tool-header"><h3>// URL_ENCODER</h3><span>🔗</span></div>
+    <div class="tool-body">
+      <p style="font-size: 0.85rem; color: #555;">Encode or decode URL components (Prevents URL Injection).</p>
+      <textarea id="urlInput" class="tool-input" placeholder="Enter URL or text here..."></textarea>
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="tool-btn" style="flex: 1;" onclick="urlEncode()">Encode</button>
+        <button class="tool-btn" style="flex: 1; background: var(--accent-blue);" onclick="urlDecode()">Decode</button>
+      </div>
+      <div class="tool-output">
+        <input type="text" id="urlOutput" class="tool-input" readonly placeholder="Result...">
+        <button class="copy-icon" onclick="copyToolText('urlOutput')">📋</button>
+      </div>
+    </div>
+  </div>  
+
 <!-- INTERACTIVE PYTHON TERMINAL -->
 <div class="section-header" id="terminal">
   <h2>Python Terminal</h2>
@@ -825,6 +842,27 @@
   }
   
   detectUserAgent();  
+
+    /* ---------- TOOL 6: URL ENCODER/DECODER ---------- */
+  function urlEncode() {
+    try {
+      const input = document.getElementById('urlInput').value;
+      const encoded = encodeURIComponent(input);
+      document.getElementById('urlOutput').value = encoded;
+    } catch (e) {
+      document.getElementById('urlOutput').value = "Error: Invalid Input";
+    }
+  }
+
+  function urlDecode() {
+    try {
+      const input = document.getElementById('urlInput').value;
+      const decoded = decodeURIComponent(input);
+      document.getElementById('urlOutput').value = decoded;
+    } catch (e) {
+      document.getElementById('urlOutput').value = "Error: Invalid URL Encoded String";
+    }
+  }
 
 </script>
 
