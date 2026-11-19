@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTF Challenge — SEVEN Hub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFFFF' stroke='%230F0F0F' stroke-width='8'/><text y='.85em' x='25' font-size='90' font-weight='bold' fill='%230F0F0F'>7</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F4F0; --ink: #0F0F0F; --accent: #FF4D00; --accent-blue: #0000FF;
+    --border: 2px solid var(--ink); --shadow: 6px 6px 0px var(--ink);
+    --font-display: 'Space Grotesk', sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-mono); line-height: 1.6; }
+  header { background: var(--bg); border-bottom: 4px solid var(--ink); padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+  .back-btn { font-weight: 600; padding: 8px 16px; border: var(--border); background: #fff; box-shadow: 3px 3px 0 var(--ink); text-transform: uppercase; text-decoration: none; color: var(--ink); }
+  .back-btn:hover { background: var(--ink); color: #fff; transform: translate(3px, 3px); box-shadow: 0 0 0; }
+  .container { max-width: 800px; margin: 4rem auto; padding: 0 2rem; }
+  h1 { font-family: var(--font-display); font-size: 3rem; text-transform: uppercase; margin-bottom: 0.5rem; }
+  p.subtitle { color: #555; margin-bottom: 3rem; }
+  .challenge-card { border: var(--border); background: #fff; box-shadow: var(--shadow); padding: 2rem; margin-bottom: 2rem; }
+  .challenge-card h2 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1rem; color: var(--accent); }
+  .challenge-card p { margin-bottom: 1rem; }
+  .hint { font-size: 0.85rem; background: #f0f0f0; padding: 0.5rem; border-left: 3px solid var(--accent-blue); margin-bottom: 1rem; }
+  .ctf-input { width: 100%; padding: 0.8rem; border: var(--border); font-family: var(--font-mono); margin-bottom: 1rem; }
+  .ctf-btn { padding: 0.8rem 1.5rem; background: var(--ink); color: #fff; border: none; font-family: var(--font-display); font-weight: bold; cursor: pointer; text-transform: uppercase; }
+  .ctf-btn:hover { background: var(--accent); }
+  .result { margin-top: 1rem; font-weight: bold; padding: 1rem; display: none; }
+  .success { background: #d4edda; color: #155724; border: 2px dashed #c3e6cb; }
+  .error { background: #f8d7da; color: #721c24; border: 2px dashed #f5c6cb; }
+  .hidden-text { color: #F4F4F0; user-select: text; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="back-btn">← Return to Hub</a>
+    <div style="font-family: var(--font-display); font-weight: bold;">CTF_CHALLENGE</div>
+  </div>
+</header>
+
+<div class="container">
+  <h1>Capture The Flag</h1>
+  <p class="subtitle">Test your basic cybersecurity skills. Find the 3 hidden flags.</p>
+
+  <!-- Challenge 1: Base64 -->
+  <div class="challenge-card">
+    <h2>#1 Base64 Decoding</h2>
+    <p>Decode the following Base64 string to reveal the flag:</p>
+    <code style="display:block; background:#f0f0f0; padding:1rem; margin-bottom:1rem;">U0VWRU5fQkFTRTY0X01BU1RFUg==</code>
+    <input type="text" id="flag1" class="ctf-input" placeholder="FLAG{...}">
+    <button class="ctf-btn" onclick="checkFlag(1)">Submit Flag</button>
+    <div id="result1" class="result"></div>
+  </div>
+
+  <!-- Challenge 2: Inspect Element -->
+  <div class="challenge-card">
+    <h2>#2 Inspect Element</h2>
+    <p>The flag is hidden somewhere in the HTML source code of this page.</p>
+    <div class="hint">Hint: Right-click and choose "View Page Source" or press F12.</div>
+    <!-- FLAG{INSP3CT_TH3_C0D3} -->
+    <input type="text" id="flag2" class="ctf-input" placeholder="FLAG{...}">
+    <button class="ctf-btn" onclick="checkFlag(2)">Submit Flag</button>
+    <div id="result2" class="result"></div>
+  </div>
+
+  <!-- Challenge 3: Hidden Text -->
+  <div class="challenge-card">
+    <h2>#3 Hidden Text</h2>
+    <p>Sometimes, text is hidden in plain sight. Try to highlight the empty space below.</p>
+    <div style="border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem; background: #fff;">
+      <span class="hidden-text">FLAG{H1DD3N_IN_PL41N_S1GHT}</span>
+    </div>
+    <input type="text" id="flag3" class="ctf-input" placeholder="FLAG{...}">
+    <button class="ctf-btn" onclick="checkFlag(3)">Submit Flag</button>
+    <div id="result3" class="result"></div>
+  </div>
+
+</div>
+
+<script>
+  const flags = {
+    1: "FLAG{BASE64_MASTER}",
+    2: "FLAG{INSP3CT_TH3_C0D3}",
+    3: "FLAG{H1DD3N_IN_PL41N_S1GHT}"
+  };
+
+  function checkFlag(num) {
+    const input = document.getElementById('flag' + num).value.trim();
+    const resultBox = document.getElementById('result' + num);
+    
+    resultBox.style.display = 'block';
+    
+    if (input === flags[num]) {
+      resultBox.className = 'result success';
+      resultBox.innerHTML = `[+] CORRECT! You found Flag #${num}. Great job!`;
+    } else {
+      resultBox.className = 'result error';
+      resultBox.innerHTML = `[-] INCORRECT. Try again or use the hint.`;
+    }
+  }
+</script>
+
+</body>
+</html>
