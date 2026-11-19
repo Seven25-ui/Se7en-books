@@ -6,15 +6,14 @@
 <title>SEVEN — Python & Cybersecurity Engineering</title>
 
 <!-- Google Tag Manager / Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-V44V2E8512"></script>
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KNJSJC49"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-V44V2E8512');
 </script>
 
-<!-- UPDATED FAVICON: White background, Bold 7, Black outline -->
+<!-- UPDATED FAVICON -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFFFF' stroke='%230F0F0F' stroke-width='8'/><text y='.85em' x='25' font-size='90' font-weight='bold' fill='%230F0F0F'>7</text></svg>">
 
 <!-- SEO & Social Media Meta Tags -->
@@ -131,6 +130,16 @@
 
   .check-row { display: flex; gap: 1rem; align-items: center; font-size: 0.85rem; font-weight: 600; }
   .check-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
+
+  /* ---------- JWT & HASH SPECIAL STYLES ---------- */
+  .jwt-box { background: #1e1e1e; color: #fff; padding: 1rem; border-radius: 4px; border: 2px solid #333; overflow-x: auto; display: none; margin-top: 1rem; font-size: 0.85rem; }
+  .jwt-box strong { color: #00ffcc; display: block; margin-bottom: 5px; font-family: var(--font-display); }
+  .jwt-header { color: #ff5555; }
+  .jwt-payload { color: #50fa7b; }
+  .jwt-signature { color: #f1fa8c; }
+  .hash-result { font-weight: bold; margin-top: 0.5rem; display: none; padding: 0.8rem; border: 2px dashed #ccc; }
+  .hash-success { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+  .hash-danger { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
 
   /* ---------- PYTHON TERMINAL ---------- */
   .terminal-section { max-width: 1000px; margin: 0 auto 4rem; padding: 0 2rem; }
@@ -356,6 +365,39 @@
       </div>
     </div>
   </div>
+
+  <!-- NEW Tool 4: JWT Decoder -->
+  <div class="tool-card">
+    <div class="tool-header"><h3>// JWT_DECODER</h3><span>🎫</span></div>
+    <div class="tool-body">
+      <p style="font-size: 0.85rem; color: #555;">Decode a JSON Web Token to view its contents.</p>
+      <textarea id="jwtInput" class="tool-input" placeholder="Paste your JWT here (e.g. eyJhbGci... )"></textarea>
+      <button class="tool-btn" onclick="decodeJWT()">Decode Token</button>
+      
+      <div id="jwtOutput" class="jwt-box">
+        <strong>Header:</strong>
+        <div class="jwt-header" id="jwtHeader"></div>
+        <br>
+        <strong>Payload:</strong>
+        <div class="jwt-payload" id="jwtPayload"></div>
+        <br>
+        <strong>Signature:</strong>
+        <div class="jwt-signature" id="jwtSignature"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW Tool 5: Hash Checker (Dictionary) -->
+  <div class="tool-card">
+    <div class="tool-header"><h3>// HASH_CRACKER</h3><span>🔨</span></div>
+    <div class="tool-body">
+      <p style="font-size: 0.85rem; color: #555;">Check if an MD5 or SHA-256 hash is in our weak password dictionary.</p>
+      <input type="text" id="crackInput" class="tool-input" placeholder="Paste MD5 or SHA-256 hash...">
+      <button class="tool-btn" onclick="crackHash()">Crack Hash</button>
+      
+      <div id="crackResult" class="hash-result"></div>
+    </div>
+  </div>
 </div>
 
 <!-- INTERACTIVE PYTHON TERMINAL -->
@@ -468,6 +510,78 @@
     output.value = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
+  /* ---------- TOOL 4: JWT DECODER ---------- */
+  function decodeJWT() {
+    const token = document.getElementById('jwtInput').value.trim();
+    const outputBox = document.getElementById('jwtOutput');
+    
+    if (!token) {
+      alert("Please paste a JWT first.");
+      return;
+    }
+
+    try {
+      // JWT has 3 parts: Header, Payload, Signature
+      const parts = token.split('.');
+      if (parts.length !== 3) throw new Error("Invalid JWT format");
+
+      // Helper function to decode Base64Url
+      const base64UrlDecode = (str) => {
+        str = str.replace(/-/g, '+').replace(/_/g, '/');
+        return decodeURIComponent(atob(str).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+      };
+
+      const header = JSON.parse(base64UrlDecode(parts[0]));
+      const payload = JSON.parse(base64UrlDecode(parts[1]));
+
+      document.getElementById('jwtHeader').textContent = JSON.stringify(header, null, 2);
+      document.getElementById('jwtPayload').textContent = JSON.stringify(payload, null, 2);
+      document.getElementById('jwtSignature').textContent = parts[2];
+
+      outputBox.style.display = 'block';
+    } catch (e) {
+      alert("Error decoding JWT. Make sure it is a valid token.");
+      outputBox.style.display = 'none';
+    }
+  }
+
+  /* ---------- TOOL 5: HASH CRACKER (DICTIONARY) ---------- */
+  // Small local dictionary of common MD5 and SHA-256 hashes
+  const hashDictionary = {
+    // MD5
+    "5f4dcc3b5aa765d61d8327deb882cf99": "password",
+    "e10adc3949ba59abbe56e057f20f883e": "123456",
+    "21232f297a57a5a743894a0e4a801fc3": "admin",
+    "25d55ad283aa400af464c76d713c07ad": "12345678",
+    "d8578edf8458ce06fbc5bb76a58c5ca4": "qwerty",
+    // SHA-256
+    "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8": "password",
+    "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92": "123456",
+    "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918": "admin"
+  };
+
+  function crackHash() {
+    const input = document.getElementById('crackInput').value.trim().toLowerCase();
+    const resultBox = document.getElementById('crackResult');
+    
+    if (!input) {
+      alert("Please enter a hash.");
+      return;
+    }
+
+    resultBox.style.display = 'block';
+
+    if (hashDictionary[input]) {
+      resultBox.className = 'hash-result hash-success';
+      resultBox.innerHTML = `[+] HASH CRACKED!<br>The plaintext is: <strong>${hashDictionary[input]}</strong>`;
+    } else {
+      resultBox.className = 'hash-result hash-danger';
+      resultBox.innerHTML = `[-] HASH NOT FOUND.<br>It is either a strong password or not in our dictionary.`;
+    }
+  }
+
   /* ---------- COPY CLIPBOARD ---------- */
   function copyToolText(elementId) {
     const text = document.getElementById(elementId).value;
@@ -488,7 +602,6 @@
   const pyStatus = document.getElementById('pyStatus');
   let pyodideReady = false;
 
-  // Asynchronously load Pyodide
   async function initPyodide() {
     try {
       const pyodide = await loadPyodide({
@@ -507,11 +620,8 @@
       appendTermLine("Failed to load Python environment.", '#ff5555');
     }
   }
-
-  // Start loading Pyodide immediately
   initPyodide();
 
-  // Helper to append text to the terminal
   function appendTermLine(text, color = '#00ffcc') {
     const div = document.createElement('div');
     div.className = 'term-line';
@@ -521,7 +631,6 @@
     termBody.scrollTop = termBody.scrollHeight;
   }
 
-  // Helper to prevent HTML injection in terminal echo
   function escapeHTML(str) {
     return str.replace(/[&<>'"]/g, 
       tag => ({
@@ -534,19 +643,14 @@
     );
   }
 
-  // Function aron makadagan og code (gigamit sa Enter key ug sa Examples)
   async function executeCode(code) {
     if (!code.trim()) return;
-
-    // 1. Echo the command sa terminal
     const echoDiv = document.createElement('div');
     echoDiv.className = 'term-line';
-    // Kinahanglan i-escape ang HTML unya i-convert ang newline ngadto sa <br> aron mo-format og tarong
     echoDiv.innerHTML = `<span class="term-prompt">&gt;&gt;&gt;</span><span style="color: #fff;">${escapeHTML(code).replace(/\n/g, '<br>')}</span>`;
     termBody.appendChild(echoDiv);
     termBody.scrollTop = termBody.scrollHeight;
 
-    // 2. Run the Python code
     if (pyodideReady) {
       try {
         await window.pyodide.runPythonAsync(code);
@@ -558,16 +662,14 @@
     }
   }
 
-  // Handle Enter key in terminal
   termInput.addEventListener('keydown', async (e) => {
     if (e.key === 'Enter') {
       const code = termInput.value;
-      termInput.value = ''; // Clear input dayon
+      termInput.value = '';
       await executeCode(code);
     }
   });
 
-  // Function para sa "Quick Examples" Buttons
   function insertExample(code) {
     if (!pyodideReady) {
       alert("Python is still loading. Please wait a moment.");
@@ -576,7 +678,6 @@
     executeCode(code);
   }
 
-  // Function para i-clear ang terminal screen
   function clearTerminal() {
     termBody.innerHTML = `
       <div class="term-line" style="color: #888;">Python 3.12.0 (WebAssembly) [Pyodide]</div>
