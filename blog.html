@@ -64,8 +64,30 @@
   <p class="subtitle">Documenting my journey in Python, Cybersecurity, and Web Development.</p>
 
   <div class="blog-grid">
+
+    <!-- NEW Blog Post 1: Security Headers -->
+    <a href="#" class="blog-card" onclick="openArticle('article4'); return false;">
+      <div class="blog-meta">
+        <span>📅 Nov 21, 2026</span>
+        <span>🏷️ Security</span>
+      </div>
+      <h2>How I Got a Grade A on SecurityHeaders.com</h2>
+      <p>Securing a static site is not just about HTTPS. Let me walk you through the HTTP security headers I implemented using Cloudflare Pages' `_headers` file...</p>
+      <span class="read-more">Read Article →</span>
+    </a>
+
+    <!-- NEW Blog Post 2: Python Terminal -->
+    <a href="#" class="blog-card" onclick="openArticle('article5'); return false;">
+      <div class="blog-meta">
+        <span>📅 Nov 20, 2026</span>
+        <span>🏷️ Python</span>
+      </div>
+      <h2>Building a Live Python Terminal on a Static Site</h2>
+      <p>Most people think you need a server to run Python. But with Pyodide and WebAssembly, I managed to run a full Python 3.12 environment directly in the browser...</p>
+      <span class="read-more">Read Article →</span>
+    </a>
     
-    <!-- Blog Post 1 -->
+    <!-- Blog Post 3 (Daan) -->
     <a href="#" class="blog-card" onclick="openArticle('article1'); return false;">
       <div class="blog-meta">
         <span>📅 Nov 19, 2026</span>
@@ -76,7 +98,7 @@
       <span class="read-more">Read Article →</span>
     </a>
 
-    <!-- Blog Post 2 -->
+    <!-- Blog Post 4 (Daan) -->
     <a href="#" class="blog-card" onclick="openArticle('article2'); return false;">
       <div class="blog-meta">
         <span>📅 Nov 15, 2026</span>
@@ -87,7 +109,7 @@
       <span class="read-more">Read Article →</span>
     </a>
 
-    <!-- Blog Post 3 -->
+    <!-- Blog Post 5 (Daan) -->
     <a href="#" class="blog-card" onclick="openArticle('article3'); return false;">
       <div class="blog-meta">
         <span>📅 Nov 10, 2026</span>
@@ -104,6 +126,66 @@
 <!-- ==========================================
      ARTICLE MODALS (Ang tibuok content)
      ========================================== -->
+<div class="article-modal" id="article4" onclick="closeArticle(event)">
+  <div class="article-content">
+    <button class="close-btn" onclick="closeArticle(event)">✕ Close</button>
+    <h2>How I Got a Grade A on SecurityHeaders.com</h2>
+    <p style="color:#666; margin-bottom: 2rem;">Published: Nov 21, 2026</p>
+    
+    <p>When I moved my site to Cloudflare Pages, I thought I was done. I had HTTPS, and my site loaded fast. But when I scanned it on <strong>securityheaders.com</strong>, I got a <strong>Grade B</strong>.</p>
+    
+    <p>The missing piece? HTTP Security Headers. These headers tell the browser how to behave when interacting with my site. Here's how I fixed it using a simple <code>_headers</code> file in my repository:</p>
+    
+    <pre><code>/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://www.googletagmanager.com; connect-src 'self';</code></pre>
+
+    <p><strong>Key Takeaways:</strong></p>
+    <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+      <li><strong>X-Frame-Options:</strong> Stops other sites from putting my site in an iframe (clickjacking).</li>
+      <li><strong>Strict-Transport-Security (HSTS):</strong> Forces the browser to always use HTTPS.</li>
+      <li><strong>Content-Security-Policy:</strong> Whitelists where scripts and styles can load from. This was tricky because I needed to allow Pyodide and Google Fonts.</li>
+    </ul>
+
+    <p>After deploying this, I scanned again and got a <strong>Grade A</strong>. The warning about <code>unsafe-inline</code> is normal because my site uses inline scripts for the tools.</p>
+  </div>
+</div>
+
+<div class="article-modal" id="article5" onclick="closeArticle(event)">
+  <div class="article-content">
+    <button class="close-btn" onclick="closeArticle(event)">✕ Close</button>
+    <h2>Building a Live Python Terminal on a Static Site</h2>
+    <p style="color:#666; margin-bottom: 2rem;">Published: Nov 20, 2026</p>
+    
+    <p>One of the most asked questions about my site is: <em>"How are you running Python in the browser without a server?"</em></p>
+    
+    <p>The answer is <strong>Pyodide</strong>, a project by Mozilla that compiles the CPython interpreter to WebAssembly (WASM). It allows you to run a real Python 3.12 environment inside the browser.</p>
+
+    <p>Here's the basic setup I used:</p>
+    
+    <pre><code>&lt;script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"&gt;&lt;/script&gt;
+
+&lt;script&gt;
+  async function main() {
+    let pyodide = await loadPyodide();
+    pyodide.runPython(`
+      print("Hello from Python!")
+    `);
+  }
+  main();
+&lt;/script&gt;</code></pre>
+
+    <p>But the real challenge was handling user input and displaying the output in a terminal-like interface. I created a <code>runPythonAsync</code> function that captures the stdout and stderr:</p>
+
+    <pre><code>await window.pyodide.runPythonAsync(userCode);</code></pre>
+
+    <p>This is a powerful way to create educational tools without managing a backend server.</p>
+  </div>
+</div>
+
 <div class="article-modal" id="article1" onclick="closeArticle(event)">
   <div class="article-content">
     <button class="close-btn" onclick="closeArticle(event)">✕ Close</button>
